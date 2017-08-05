@@ -49,18 +49,18 @@ public class QuizActivity extends AppCompatActivity {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
         }
 
-        mTrueButton = (Button) findViewById(R.id.true_button);
-        mFalseButton = (Button) findViewById(R.id.false_button);
-        ImageButton mPreviousImageButton = (ImageButton) findViewById(R.id.previous_image_button);
-        ImageButton mNextImageButton = (ImageButton) findViewById(R.id.next_image_button);
-        Button cheatButton = (Button) findViewById(R.id.cheat_button);
+        mTrueButton = findViewById(R.id.true_button);
+        mFalseButton = findViewById(R.id.false_button);
+        ImageButton mPreviousImageButton = findViewById(R.id.previous_image_button);
+        ImageButton mNextImageButton = findViewById(R.id.next_image_button);
+        Button cheatButton = findViewById(R.id.cheat_button);
         cheatButton.setOnClickListener(view -> {
             boolean answerIsTrue = this.mQuestionBank[mCurrentIndex].isAnswerTrue();
             Intent intent = CheatActivity.createIntent(QuizActivity.this, answerIsTrue);
             startActivityForResult(intent, REQUEST_CODE_CHEAT);
         });
 
-        mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
+        mQuestionTextView = findViewById(R.id.question_text_view);
         mQuestionTextView.setOnClickListener(view -> checkNext());
         updateQuestion();
 
