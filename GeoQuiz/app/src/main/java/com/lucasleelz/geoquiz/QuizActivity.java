@@ -13,29 +13,26 @@ import java.text.NumberFormat;
 
 public class QuizActivity extends AppCompatActivity {
 
-    public static final String TAG = "QuizActivity";
-    public static final String KEY_INDEX = "index";
+    private static final String TAG = "QuizActivity";
+    private static final String KEY_INDEX = "index";
 
     private Button mTrueButton;
     private Button mFalseButton;
 
     private TextView mQuestionTextView;
 
-    private Question[] mQuestionBank = new Question[]{
+    private final Question[] mQuestionBank = new Question[]{
             new Question(R.string.question_australia, true),
             new Question(R.string.question_oceans, true),
-            new Question(R.string.question_mideast, true),
-            new Question(R.string.question_africa, true),
-            new Question(R.string.question_americas, true),
+            new Question(R.string.question_mideast, false),
+            new Question(R.string.question_africa, false),
+            new Question(R.string.question_americas, false),
             new Question(R.string.question_asia, true),
     };
 
     private int mCurrentIndex = 0;            // 当前问题索引。
     private int mHasAnsweredCount = 0;        // 回答总数。
     private int mHasAnsweredCorrectCount = 0; // 回答正确数。
-
-    private ImageButton mPreviousImageButton;
-    private ImageButton mNextImageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +48,8 @@ public class QuizActivity extends AppCompatActivity {
 
         mTrueButton = (Button) findViewById(R.id.true_button);
         mFalseButton = (Button) findViewById(R.id.false_button);
-        mPreviousImageButton = (ImageButton) findViewById(R.id.previous_image_button);
-        mNextImageButton = (ImageButton) findViewById(R.id.next_image_button);
+        ImageButton mPreviousImageButton = (ImageButton) findViewById(R.id.previous_image_button);
+        ImageButton mNextImageButton = (ImageButton) findViewById(R.id.next_image_button);
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mQuestionTextView.setOnClickListener(view -> checkNext());

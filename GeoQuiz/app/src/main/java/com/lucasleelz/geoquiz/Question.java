@@ -1,20 +1,16 @@
 package com.lucasleelz.geoquiz;
 
 /**
+ * 问题。
  * Created by LucasLee on 2017/8/5.
  */
-
 public class Question {
 
-    private int mTextResId;
+    private final int mTextResId;
 
-    private boolean mAnswerTrue;
+    private final boolean mAnswerTrue;
 
-    private boolean mHasAnswered; // 已经回答了。
-
-    private Question() {
-
-    }
+    private boolean mHasAnswered = false; // 已经回答了。
 
     public Question(int textResId, boolean answerTrue) {
         mTextResId = textResId;
