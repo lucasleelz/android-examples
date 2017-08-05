@@ -12,7 +12,9 @@ public class QuizActivity extends AppCompatActivity {
 
     private Button mFalseButton;
 
+    private Button mPreviousButton;
     private Button mNextButton;
+
     private TextView mQuestionTextView;
 
     private Question[] mQuestionBank = new Question[]{
@@ -33,6 +35,7 @@ public class QuizActivity extends AppCompatActivity {
 
         mTrueButton = (Button) findViewById(R.id.true_button);
         mFalseButton = (Button) findViewById(R.id.false_button);
+        mPreviousButton = (Button) findViewById(R.id.previous_button);
         mNextButton = (Button) findViewById(R.id.next_button);
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
@@ -41,6 +44,7 @@ public class QuizActivity extends AppCompatActivity {
 
         mTrueButton.setOnClickListener(view -> checkAnswer(true));
         mFalseButton.setOnClickListener(view -> checkAnswer(false));
+        mPreviousButton.setOnClickListener(view -> checkPrevious());
         mNextButton.setOnClickListener(view -> checkNext());
     }
 
@@ -57,6 +61,11 @@ public class QuizActivity extends AppCompatActivity {
                 : R.string.incorrect_toast;
 
         Toast.makeText(this, messageResId, Toast.LENGTH_LONG).show();
+    }
+
+    private void checkPrevious() {
+        mCurrentIndex = mCurrentIndex == 0 ? mQuestionBank.length - 1 : mCurrentIndex - 1;
+        updateQuestion();
     }
 
     private void checkNext() {
