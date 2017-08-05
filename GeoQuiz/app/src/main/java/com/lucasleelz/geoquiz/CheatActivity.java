@@ -1,9 +1,14 @@
 package com.lucasleelz.geoquiz;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -47,6 +52,24 @@ public class CheatActivity extends AppCompatActivity {
             mAnswerShow = true;
             updateAnswerTextView(answerIsTrue);
             setAnswerShownResult();
+
+            int cx = mShowAnswerButton.getWidth() / 2;
+            int cy = mShowAnswerButton.getHeight() / 2;
+            float radius = mShowAnswerButton.getWidth();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Animator animator = ViewAnimationUtils.createCircularReveal(mShowAnswerButton, cx, cy, radius, 0);
+                animator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        inVisibilityShowAnswerButton();
+                    }
+                });
+                animator.start();
+            } else {
+                inVisibilityShowAnswerButton();
+            }
+
         });
     }
 
@@ -69,5 +92,9 @@ public class CheatActivity extends AppCompatActivity {
         }
         int AnswerResId = answerIsTrue ? R.string.true_button : R.string.false_button;
         mAnswerTextView.setText(AnswerResId);
+    }
+
+    private void inVisibilityShowAnswerButton() {
+        mShowAnswerButton.setVisibility(View.INVISIBLE);
     }
 }
