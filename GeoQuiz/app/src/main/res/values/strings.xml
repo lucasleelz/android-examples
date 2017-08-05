@@ -19,4 +19,5 @@
     <string name="show_answer_button">Show</string>
     <string name="cheat_button">Cheat</string>
     <string name="warning_text_view">偷看答案是不对的~~~</string>
+    <string name="judgment_toast">Cheating is wrong.</string>
 </resources>

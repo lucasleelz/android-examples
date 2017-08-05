@@ -1,5 +1,7 @@
 package com.lucasleelz.geoquiz;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +17,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
+    private static final int REQUEST_CODE_CHEAT = 0;
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -33,6 +36,7 @@ public class QuizActivity extends AppCompatActivity {
     private int mCurrentIndex = 0;            // 当前问题索引。
     private int mHasAnsweredCount = 0;        // 回答总数。
     private int mHasAnsweredCorrectCount = 0; // 回答正确数。
+    private boolean mIsCheater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,9 @@ public class QuizActivity extends AppCompatActivity {
         ImageButton mNextImageButton = (ImageButton) findViewById(R.id.next_image_button);
         Button cheatButton = (Button) findViewById(R.id.cheat_button);
         cheatButton.setOnClickListener(view -> {
-            startActivity(CheatActivity.createIntent(QuizActivity.this, this.mQuestionBank[mCurrentIndex].isAnswerTrue()));
+            boolean answerIsTrue = this.mQuestionBank[mCurrentIndex].isAnswerTrue();
+            Intent intent = CheatActivity.createIntent(QuizActivity.this, answerIsTrue);
+            startActivityForResult(intent, REQUEST_CODE_CHEAT);
         });
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
@@ -66,6 +72,20 @@ public class QuizActivity extends AppCompatActivity {
 
         mPreviousImageButton.setOnClickListener(view -> checkPrevious());
         mNextImageButton.setOnClickListener(view -> checkNext());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode != REQUEST_CODE_CHEAT) {
+            return;
+        }
+        if (data == null) {
+            return;
+        }
+        mIsCheater = CheatActivity.hasAnswerShown(data);
     }
 
     @Override
@@ -134,13 +154,16 @@ public class QuizActivity extends AppCompatActivity {
             return;
         }
 
+
         currentQuestion.setAnswered(true);
         updateAnswerButton();
 
         mHasAnsweredCount++;
 
         int messageResId = R.string.incorrect_toast;
-        if (userPressedTrue == currentQuestion.isAnswerTrue()) {
+        if (mIsCheater) {
+            messageResId =  R.string.judgment_toast;
+        } else if (userPressedTrue == currentQuestion.isAnswerTrue()) {
             messageResId = R.string.correct_toast;
             mHasAnsweredCorrectCount++;
         }
@@ -161,6 +184,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private void checkNext() {
         mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+        mIsCheater = false;
         updateQuestion();
         updateAnswerButton();
     }
