@@ -2,7 +2,6 @@ package com.lucasleelz.geoquiz;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +36,7 @@ public class QuizActivity extends AppCompatActivity {
         mNextButton = (Button) findViewById(R.id.next_button);
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
-
+        mQuestionTextView.setOnClickListener(view -> checkNext());
         updateQuestion();
 
         mTrueButton.setOnClickListener(view -> checkAnswer(true));
