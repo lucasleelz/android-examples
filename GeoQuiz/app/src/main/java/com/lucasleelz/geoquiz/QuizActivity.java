@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
+
 public class QuizActivity extends AppCompatActivity {
 
     public static final String TAG = "QuizActivity";
@@ -28,7 +30,9 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_asia, true),
     };
 
-    private int mCurrentIndex = 0;
+    private int mCurrentIndex = 0;            // 当前问题索引。
+    private int mHasAnsweredCount = 0;        // 回答总数。
+    private int mHasAnsweredCorrectCount = 0; // 回答正确数。
 
     private ImageButton mPreviousImageButton;
     private ImageButton mNextImageButton;
@@ -125,28 +129,39 @@ public class QuizActivity extends AppCompatActivity {
     private void checkAnswer(boolean userPressedTrue) {
         Question currentQuestion = mQuestionBank[mCurrentIndex];
         if (currentQuestion.hasAnswered()) {
-            Toast.makeText(this, R.string.has_answered_toast, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.has_answered_toast, Toast.LENGTH_SHORT).show();
             return;
         }
+
         currentQuestion.setAnswered(true);
         updateAnswerButton();
 
-        int messageResId = userPressedTrue == currentQuestion.isAnswerTrue()
-                ? R.string.correct_toast
-                : R.string.incorrect_toast;
+        mHasAnsweredCount++;
 
-        Toast.makeText(this, messageResId, Toast.LENGTH_LONG).show();
+        int messageResId = R.string.incorrect_toast;
+        if (userPressedTrue == currentQuestion.isAnswerTrue()) {
+            messageResId = R.string.correct_toast;
+            mHasAnsweredCorrectCount++;
+        }
+        if (mHasAnsweredCount == mQuestionBank.length) {
+            Log.i(TAG, "正确数 ：" + mHasAnsweredCorrectCount);
+            Toast.makeText(this, "你已经回答了所有问题，正确率为：" + formatAnsweredResult() + "%", Toast.LENGTH_LONG).show();
+            return;
+        }
 
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
     }
 
     private void checkPrevious() {
         mCurrentIndex = mCurrentIndex == 0 ? mQuestionBank.length - 1 : mCurrentIndex - 1;
         updateQuestion();
+        updateAnswerButton();
     }
 
     private void checkNext() {
         mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
         updateQuestion();
+        updateAnswerButton();
     }
 
     private void updateAnswerButton() {
@@ -165,5 +180,11 @@ public class QuizActivity extends AppCompatActivity {
             mFalseButton.setBackgroundColor(Color.BLUE);
             mFalseButton.setTextColor(Color.WHITE);
         }
+    }
+
+    private String formatAnsweredResult() {
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setMaximumFractionDigits(2);
+        return numberFormat.format((float)mHasAnsweredCorrectCount / (float)mHasAnsweredCount * 100);
     }
 }
