@@ -12,6 +12,8 @@ public class Question {
 
     private boolean mHasAnswered = false; // 已经回答了。
 
+    private boolean mIsCheater = false;
+
     public Question(int textResId, boolean answerTrue) {
         mTextResId = textResId;
         mAnswerTrue = answerTrue;
@@ -31,5 +33,13 @@ public class Question {
 
     public void setAnswered(boolean hasAnswered) {
         mHasAnswered = hasAnswered;
+    }
+
+    public boolean isCheater() {
+        return mIsCheater;
+    }
+
+    public void setCheater(boolean cheater) {
+        mIsCheater = cheater;
     }
 }

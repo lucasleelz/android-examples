@@ -17,7 +17,6 @@ public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
-    private static final String KEY_IS_CHEATER = "isCheaterIndex";
     private static final int REQUEST_CODE_CHEAT = 0;
 
     private Button mTrueButton;
@@ -37,7 +36,6 @@ public class QuizActivity extends AppCompatActivity {
     private int mCurrentIndex = 0;            // 当前问题索引。
     private int mHasAnsweredCount = 0;        // 回答总数。
     private int mHasAnsweredCorrectCount = 0; // 回答正确数。
-    private boolean mIsCheater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +47,6 @@ public class QuizActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
-            mIsCheater = savedInstanceState.getBoolean(KEY_IS_CHEATER, false);
         }
 
         mTrueButton = (Button) findViewById(R.id.true_button);
@@ -87,7 +84,10 @@ public class QuizActivity extends AppCompatActivity {
         if (data == null) {
             return;
         }
-        mIsCheater = CheatActivity.hasAnswerShown(data);
+
+        Question currentQuestion = mQuestionBank[mCurrentIndex];
+        currentQuestion.setCheater(
+                CheatActivity.hasAnswerShown(data));
     }
 
     @Override
@@ -125,7 +125,6 @@ public class QuizActivity extends AppCompatActivity {
         Log.i(TAG, "onSaveInstanceState()");
 
         outState.putInt(KEY_INDEX, mCurrentIndex);
-        outState.putBoolean(KEY_IS_CHEATER, mIsCheater);
     }
 
     /**
@@ -164,7 +163,7 @@ public class QuizActivity extends AppCompatActivity {
         mHasAnsweredCount++;
 
         int messageResId = R.string.incorrect_toast;
-        if (mIsCheater) {
+        if (currentQuestion.isCheater()) {
             messageResId =  R.string.judgment_toast;
         } else if (userPressedTrue == currentQuestion.isAnswerTrue()) {
             messageResId = R.string.correct_toast;
@@ -187,7 +186,6 @@ public class QuizActivity extends AppCompatActivity {
 
     private void checkNext() {
         mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-        mIsCheater = false;
         updateQuestion();
         updateAnswerButton();
     }
