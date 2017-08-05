@@ -50,6 +50,10 @@ public class QuizActivity extends AppCompatActivity {
         mFalseButton = (Button) findViewById(R.id.false_button);
         ImageButton mPreviousImageButton = (ImageButton) findViewById(R.id.previous_image_button);
         ImageButton mNextImageButton = (ImageButton) findViewById(R.id.next_image_button);
+        Button cheatButton = (Button) findViewById(R.id.cheat_button);
+        cheatButton.setOnClickListener(view -> {
+            startActivity(CheatActivity.createIntent(QuizActivity.this, this.mQuestionBank[mCurrentIndex].isAnswerTrue()));
+        });
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mQuestionTextView.setOnClickListener(view -> checkNext());
