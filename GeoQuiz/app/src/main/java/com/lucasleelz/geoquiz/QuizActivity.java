@@ -3,17 +3,14 @@ package com.lucasleelz.geoquiz;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
 
     private Button mTrueButton;
-
     private Button mFalseButton;
-
-    private Button mPreviousButton;
-    private Button mNextButton;
 
     private TextView mQuestionTextView;
 
@@ -28,6 +25,9 @@ public class QuizActivity extends AppCompatActivity {
 
     private int mCurrentIndex = 0;
 
+    private ImageButton mPreviousImageButton;
+    private ImageButton mNextImageButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +35,8 @@ public class QuizActivity extends AppCompatActivity {
 
         mTrueButton = (Button) findViewById(R.id.true_button);
         mFalseButton = (Button) findViewById(R.id.false_button);
-        mPreviousButton = (Button) findViewById(R.id.previous_button);
-        mNextButton = (Button) findViewById(R.id.next_button);
+        mPreviousImageButton = (ImageButton) findViewById(R.id.previous_image_button);
+        mNextImageButton = (ImageButton) findViewById(R.id.next_image_button);
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mQuestionTextView.setOnClickListener(view -> checkNext());
@@ -44,8 +44,8 @@ public class QuizActivity extends AppCompatActivity {
 
         mTrueButton.setOnClickListener(view -> checkAnswer(true));
         mFalseButton.setOnClickListener(view -> checkAnswer(false));
-        mPreviousButton.setOnClickListener(view -> checkPrevious());
-        mNextButton.setOnClickListener(view -> checkNext());
+        mPreviousImageButton.setOnClickListener(view -> checkPrevious());
+        mNextImageButton.setOnClickListener(view -> checkNext());
     }
 
     private void updateQuestion() {
