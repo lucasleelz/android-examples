@@ -1,5 +1,6 @@
 package com.lucasleelz.geoquiz;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -55,6 +56,9 @@ public class QuizActivity extends AppCompatActivity {
 
         mTrueButton.setOnClickListener(view -> checkAnswer(true));
         mFalseButton.setOnClickListener(view -> checkAnswer(false));
+
+        updateAnswerButton();
+
         mPreviousImageButton.setOnClickListener(view -> checkPrevious());
         mNextImageButton.setOnClickListener(view -> checkNext());
     }
@@ -82,6 +86,9 @@ public class QuizActivity extends AppCompatActivity {
 
     /**
      * 在onStop之前由系统调用。除非用户按了后退键。
+     * 建议只保存基本类型数据。
+     * 实现了序列化的类对象或者实现了Parcelable的类对象使用其他的方式。
+     *
      * @param outState
      */
     @Override
@@ -93,6 +100,9 @@ public class QuizActivity extends AppCompatActivity {
         outState.putInt(KEY_INDEX, mCurrentIndex);
     }
 
+    /**
+     * 保存永久性数据。而onSaveInstanceState只保存暂时数据。
+     */
     @Override
     protected void onStop() {
         super.onStop();
@@ -113,13 +123,20 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void checkAnswer(boolean userPressedTrue) {
-        boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+        Question currentQuestion = mQuestionBank[mCurrentIndex];
+        if (currentQuestion.hasAnswered()) {
+            Toast.makeText(this, R.string.has_answered_toast, Toast.LENGTH_LONG).show();
+            return;
+        }
+        currentQuestion.setAnswered(true);
+        updateAnswerButton();
 
-        int messageResId = userPressedTrue == answerIsTrue
+        int messageResId = userPressedTrue == currentQuestion.isAnswerTrue()
                 ? R.string.correct_toast
                 : R.string.incorrect_toast;
 
         Toast.makeText(this, messageResId, Toast.LENGTH_LONG).show();
+
     }
 
     private void checkPrevious() {
@@ -130,5 +147,23 @@ public class QuizActivity extends AppCompatActivity {
     private void checkNext() {
         mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
         updateQuestion();
+    }
+
+    private void updateAnswerButton() {
+
+        if (this.mQuestionBank[mCurrentIndex].hasAnswered()) {
+            mTrueButton.setBackgroundColor(Color.GRAY);
+            mTrueButton.setTextColor(Color.BLACK);
+
+            mFalseButton.setBackgroundColor(Color.GRAY);
+            mFalseButton.setTextColor(Color.BLACK);
+
+        } else {
+            mTrueButton.setBackgroundColor(Color.BLUE);
+            mTrueButton.setTextColor(Color.WHITE);
+
+            mFalseButton.setBackgroundColor(Color.BLUE);
+            mFalseButton.setTextColor(Color.WHITE);
+        }
     }
 }

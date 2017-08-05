@@ -10,6 +10,8 @@ public class Question {
 
     private boolean mAnswerTrue;
 
+    private boolean mHasAnswered; // 已经回答了。
+
     private Question() {
 
     }
@@ -25,5 +27,13 @@ public class Question {
 
     public boolean isAnswerTrue() {
         return mAnswerTrue;
+    }
+
+    public boolean hasAnswered() {
+        return mHasAnswered;
+    }
+
+    public void setAnswered(boolean hasAnswered) {
+        mHasAnswered = hasAnswered;
     }
 }
