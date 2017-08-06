@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,8 @@ public class CrimeRecyclerViewAdapter extends RecyclerView.Adapter<CrimeRecycler
         private final View mView;
         private final TextView mCrimeTitleTextView;
         private final TextView mCrimeDateTextView;
+        private final ImageView mIsSolvedImageView;
+
         private Crime mCrime;
 
         public CrimeHolder(View view) {
@@ -46,6 +49,7 @@ public class CrimeRecyclerViewAdapter extends RecyclerView.Adapter<CrimeRecycler
             mView = view;
             mCrimeTitleTextView = view.findViewById(R.id.crime_title_text_view);
             mCrimeDateTextView = view.findViewById(R.id.crime_date_text_view);
+            mIsSolvedImageView = view.findViewById(R.id.is_solved_image_view);
         }
 
         public void bind(Crime crime) {
@@ -57,6 +61,8 @@ public class CrimeRecyclerViewAdapter extends RecyclerView.Adapter<CrimeRecycler
             mView.setOnClickListener(view -> {
                 Toast.makeText(view.getContext(), mCrime.getTitle() + "Clicked !", Toast.LENGTH_LONG).show();
             });
+
+            mIsSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
         }
 
         @Override
