@@ -50,4 +50,8 @@ public class Crime {
     public String getFormatDateString() {
         return new SimpleDateFormat("YYYY MM dd", Locale.CHINA).format(mDate);
     }
+
+    public void setDate(Date date) {
+        mDate = date;
+    }
 }

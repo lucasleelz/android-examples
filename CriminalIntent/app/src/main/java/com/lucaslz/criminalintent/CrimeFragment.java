@@ -1,6 +1,8 @@
 package com.lucaslz.criminalintent;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,12 +16,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
+    private static final int REQUEST_DATE = 0;
 
     private Crime mCrime;
 
@@ -57,16 +61,34 @@ public class CrimeFragment extends Fragment {
         mCrimeDateButton.setOnClickListener(view -> {
             FragmentManager manager = getFragmentManager();
             DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+            dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
             dialog.show(manager, DIALOG_DATE);
         });
         mCrimeSolvedCheckBox = result.findViewById(R.id.crime_solved_check_box);
         addCheckedChangeListener();
 
         mCrimeTitleEditText.setText(mCrime.getTitle());
-        mCrimeDateButton.setText(mCrime.getFormatDateString());
+        updateDate();
         mCrimeSolvedCheckBox.setChecked(mCrime.isSolved());
 
         return result;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode != REQUEST_DATE) {
+            return;
+        }
+        Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+        mCrime.setDate(date);
+        updateDate();
+    }
+
+    private void updateDate() {
+        mCrimeDateButton.setText(mCrime.getFormatDateString());
     }
 
     private void addCheckedChangeListener() {
