@@ -3,6 +3,7 @@ package com.lucaslz.criminalintent;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
+    private static final String DIALOG_DATE = "DialogDate";
 
     private Crime mCrime;
 
@@ -52,8 +54,11 @@ public class CrimeFragment extends Fragment {
 
         mCrimeDateButton = result.findViewById(R.id.crime_date_button);
         mCrimeDateButton.setText(mCrime.getDate().toString());
-        mCrimeDateButton.setEnabled(false);
-
+        mCrimeDateButton.setOnClickListener(view -> {
+            FragmentManager manager = getFragmentManager();
+            DatePickerFragment dialog = new DatePickerFragment();
+            dialog.show(manager, DIALOG_DATE);
+        });
         mCrimeSolvedCheckBox = result.findViewById(R.id.crime_solved_check_box);
         addCheckedChangeListener();
 

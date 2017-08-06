@@ -8,9 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.ref.PhantomReference;
+
 public class CrimeListFragment extends Fragment {
 
     private CrimeLab mCrimeLab = CrimeLab.get(getActivity());
+
+    private CrimeRecyclerViewAdapter mCrimeRecyclerViewAdapter;
+
+    private RecyclerView mRecyclerView;
 
     public CrimeListFragment() {
     }
@@ -33,15 +39,18 @@ public class CrimeListFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
-
-        // Set the adapter
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-//            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new CrimeRecyclerViewAdapter(mCrimeLab.getCrimes()));
+            mRecyclerView = (RecyclerView) view;
+            updateUI();
         }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        updateUI();
     }
 
     @Override
@@ -52,5 +61,14 @@ public class CrimeListFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    private void updateUI() {
+        if (mCrimeRecyclerViewAdapter == null) {
+            mCrimeRecyclerViewAdapter = new CrimeRecyclerViewAdapter(mCrimeLab.getCrimes());
+            mRecyclerView.setAdapter(mCrimeRecyclerViewAdapter);
+        } else {
+            mCrimeRecyclerViewAdapter.notifyDataSetChanged();
+        }
     }
 }
