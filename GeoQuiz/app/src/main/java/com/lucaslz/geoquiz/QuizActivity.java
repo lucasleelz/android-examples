@@ -1,4 +1,4 @@
-package com.lucasleelz.geoquiz;
+package com.lucaslz.geoquiz;
 
 import android.app.Activity;
 import android.content.Intent;

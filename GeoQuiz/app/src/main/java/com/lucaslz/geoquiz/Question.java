@@ -1,4 +1,4 @@
-package com.lucasleelz.geoquiz;
+package com.lucaslz.geoquiz;
 
 /**
  * 问题。

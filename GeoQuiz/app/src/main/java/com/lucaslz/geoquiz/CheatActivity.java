@@ -1,4 +1,4 @@
-package com.lucasleelz.geoquiz;
+package com.lucaslz.geoquiz;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 public class CheatActivity extends AppCompatActivity {
 
-    private static final String EXTRA_ANSWER_IS_TRUE = "com.lucasleelz.geoquiz.CheatActivity.answer_id_true";
-    private static final String EXTRA_ANSWER_SHOWN = "com.lucasleelz.geoquiz.CheatActivity.answer_shown";
+    private static final String EXTRA_ANSWER_IS_TRUE = "com.lucaslz.geoquiz.CheatActivity.answer_id_true";
+    private static final String EXTRA_ANSWER_SHOWN = "com.lucaslz.geoquiz.CheatActivity.answer_shown";
     private static final String ANSWER_SHOWN = "answer_shown";
 
     private TextView mAnswerTextView;
