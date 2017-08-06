@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GeoQuiz</string>
+    <string name="app_name">GeoQuizForKotlin</string>
 
     <string name="question_australia">1. Canberra is the capital of Australia.</string>
     <string name="question_oceans">2. The Pacific Ocean is larger than the Atlantic Ocean.</string>
