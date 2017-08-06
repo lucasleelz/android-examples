@@ -36,10 +36,10 @@ public class CrimeListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
 
         // Set the adapter
-        if ((view instanceof RecyclerView)) {
+        if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+//            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(new MyCrimeRecyclerViewAdapter(mCrimeLab.getCrimes()));
         }
         return view;

@@ -23,11 +23,8 @@ public class CrimeFragment extends Fragment {
 
     private CheckBox mCrimeSolvedCheckBox;
 
-    public static CrimeFragment newInstance(String param1, String param2) {
-        CrimeFragment fragment = new CrimeFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+    public static CrimeFragment newInstance() {
+        return new CrimeFragment();
     }
 
     @Override
