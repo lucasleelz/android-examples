@@ -3,7 +3,6 @@ package com.lucaslz.criminalintent;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +39,7 @@ public class CrimeListFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
 //            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyCrimeRecyclerViewAdapter(mCrimeLab.getCrimes()));
+            recyclerView.setAdapter(new CrimeRecyclerViewAdapter(mCrimeLab.getCrimes()));
         }
         return view;
     }

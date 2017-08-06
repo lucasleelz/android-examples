@@ -9,11 +9,11 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class MyCrimeRecyclerViewAdapter extends RecyclerView.Adapter<MyCrimeRecyclerViewAdapter.CrimeHolder> {
+public class CrimeRecyclerViewAdapter extends RecyclerView.Adapter<CrimeRecyclerViewAdapter.CrimeHolder> {
 
     private final List<Crime> mCrimes;
 
-    public MyCrimeRecyclerViewAdapter(List<Crime> crimes) {
+    public CrimeRecyclerViewAdapter(List<Crime> crimes) {
         mCrimes = crimes;
     }
 
