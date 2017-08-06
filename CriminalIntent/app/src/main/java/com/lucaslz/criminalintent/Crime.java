@@ -1,6 +1,7 @@
 package com.lucaslz.criminalintent;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
@@ -17,7 +18,9 @@ public class Crime {
 
     public Crime() {
         mId = UUID.randomUUID();
-        mDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        mDate = calendar.getTime();
     }
 
     public UUID getId() {
