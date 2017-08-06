@@ -1,5 +1,6 @@
 package com.lucaslz.criminalintent;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +60,8 @@ public class CrimeRecyclerViewAdapter extends RecyclerView.Adapter<CrimeRecycler
             mCrimeDateTextView.setText(mCrime.getFormatDateString());
 
             mView.setOnClickListener(view -> {
-                Toast.makeText(view.getContext(), mCrime.getTitle() + "Clicked !", Toast.LENGTH_LONG).show();
+                Intent intent = CrimePagerActivity.newIntent(view.getContext(), mCrime.getId());
+                view.getContext().startActivity(intent);
             });
 
             mIsSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);

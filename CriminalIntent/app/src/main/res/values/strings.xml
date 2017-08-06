@@ -7,4 +7,5 @@
     <string name="crime_solved_label">Solved</string>
     <string name="title_activity_crime_list">CrimeListActivity</string>
     <string name="is_solved">is solved icon</string>
+    <string name="title_activity_crime_pager">CrimePagerActivity</string>
 </resources>
