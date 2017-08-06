@@ -56,7 +56,7 @@ public class CrimeRecyclerViewAdapter extends RecyclerView.Adapter<CrimeRecycler
             mCrime = crime;
 
             mCrimeTitleTextView.setText(mCrime.getTitle());
-            mCrimeDateTextView.setText(mCrime.getDate().toString());
+            mCrimeDateTextView.setText(mCrime.getFormatDateString());
 
             mView.setOnClickListener(view -> {
                 Toast.makeText(view.getContext(), mCrime.getTitle() + "Clicked !", Toast.LENGTH_LONG).show();

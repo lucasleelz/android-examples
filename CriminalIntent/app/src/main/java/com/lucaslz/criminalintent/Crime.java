@@ -1,6 +1,8 @@
 package com.lucaslz.criminalintent;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -40,5 +42,9 @@ public class Crime {
 
     public void setSolved(boolean solved) {
         mSolved = solved;
+    }
+
+    public String getFormatDateString() {
+        return new SimpleDateFormat("YYYY MM dd", Locale.CHINA).format(mDate);
     }
 }
