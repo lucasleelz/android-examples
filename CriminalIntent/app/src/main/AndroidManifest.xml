@@ -18,9 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- singleTop 作用
+        不调用onDestroy().
+        -->
         <activity
             android:name=".CrimePagerActivity"
-            android:label="@string/title_activity_crime_pager" />
+            android:label="@string/title_activity_crime_pager"
+            android:launchMode="singleTop"
+            android:parentActivityName=".CrimeListActivity" />
     </application>
 
 </manifest>
