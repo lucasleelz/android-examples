@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CrimeRecyclerViewAdapter extends RecyclerView.Adapter<CrimeRecyclerViewAdapter.CrimeHolder> {
 
-    private final List<Crime> mCrimes;
+    private List<Crime> mCrimes;
 
     public CrimeRecyclerViewAdapter(List<Crime> crimes) {
         mCrimes = crimes;
@@ -35,6 +35,10 @@ public class CrimeRecyclerViewAdapter extends RecyclerView.Adapter<CrimeRecycler
     @Override
     public int getItemCount() {
         return mCrimes.size();
+    }
+
+    public void setCrimes(List<Crime> crimes) {
+        mCrimes = crimes;
     }
 
     final public class CrimeHolder extends RecyclerView.ViewHolder {

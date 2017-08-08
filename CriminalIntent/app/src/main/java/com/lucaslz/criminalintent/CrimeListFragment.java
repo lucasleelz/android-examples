@@ -13,11 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 public class CrimeListFragment extends Fragment {
 
     public static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
-
-    private CrimeLab mCrimeLab = CrimeLab.get(getActivity());
 
     private CrimeRecyclerViewAdapter mCrimeRecyclerViewAdapter;
 
@@ -113,10 +113,13 @@ public class CrimeListFragment extends Fragment {
     }
 
     private void updateUI() {
+        CrimeLab crimeLab = CrimeLab.get(getActivity());
+        List<Crime> crimes = crimeLab.getCrimes();
         if (mCrimeRecyclerViewAdapter == null) {
-            mCrimeRecyclerViewAdapter = new CrimeRecyclerViewAdapter(mCrimeLab.getCrimes());
+            mCrimeRecyclerViewAdapter = new CrimeRecyclerViewAdapter(crimes);
             mRecyclerView.setAdapter(mCrimeRecyclerViewAdapter);
         } else {
+            mCrimeRecyclerViewAdapter.setCrimes(crimes);
             mCrimeRecyclerViewAdapter.notifyDataSetChanged();
         }
         updateSubtitle();

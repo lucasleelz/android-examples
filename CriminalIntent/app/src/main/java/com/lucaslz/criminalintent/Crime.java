@@ -17,7 +17,11 @@ public class Crime {
     private boolean mSolved;
 
     public Crime() {
-        mId = UUID.randomUUID();
+        this(UUID.randomUUID());
+    }
+
+    public Crime(UUID id) {
+        mId = id;
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1);
         mDate = calendar.getTime();
