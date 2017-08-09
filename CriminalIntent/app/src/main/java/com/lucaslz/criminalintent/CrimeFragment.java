@@ -3,6 +3,7 @@ package com.lucaslz.criminalintent;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -95,10 +96,15 @@ public class CrimeFragment extends Fragment {
         });
 
         mSuspectButton = result.findViewById(R.id.crime_suspect_button);
+        final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+//        pickContact.addCategory(Intent.CATEGORY_HOME); // 过滤验证器代码。
         mSuspectButton.setOnClickListener(view -> {
-            Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
             startActivityForResult(pickContact, REQUEST_CONTACT);
         });
+        PackageManager packageManager = getActivity().getPackageManager();
+        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {
+            mSuspectButton.setEnabled(false);
+        }
         if (mCrime.getSuspect() != null) {
             mSuspectButton.setText(mCrime.getSuspect());
         }
