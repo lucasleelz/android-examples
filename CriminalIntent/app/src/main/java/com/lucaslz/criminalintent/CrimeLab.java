@@ -11,7 +11,6 @@ import com.lucaslz.criminalintent.storage.CrimeDbSchema.CrimeTable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -91,6 +90,7 @@ public class CrimeLab {
         result.put(CrimeTable.Cols.TITLE, crime.getTitle());
         result.put(CrimeTable.Cols.DATE, crime.getDate().getTime());
         result.put(CrimeTable.Cols.SOLVED, crime.isSolved() ? 1 : 1);
+        result.put(CrimeTable.Cols.SUSPECT, crime.getSuspect());
         return result;
     }
 
