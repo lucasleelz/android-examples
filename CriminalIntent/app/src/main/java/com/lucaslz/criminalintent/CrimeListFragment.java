@@ -1,5 +1,6 @@
 package com.lucaslz.criminalintent;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ public class CrimeListFragment extends Fragment {
 
     private boolean mSubtitleVisible;
 
+    private Callbacks mCallbacks;
+
     public CrimeListFragment() {
     }
 
@@ -33,6 +36,10 @@ public class CrimeListFragment extends Fragment {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public interface Callbacks {
+        void onCrimeSelected(Crime crime);
     }
 
     @Override
@@ -74,11 +81,13 @@ public class CrimeListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mCallbacks = (Callbacks) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mCallbacks = null;
     }
 
     @Override
@@ -99,8 +108,7 @@ public class CrimeListFragment extends Fragment {
             case R.id.new_crime:
                 Crime crime = new Crime();
                 CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-                startActivity(intent);
+                mCallbacks.onCrimeSelected(crime);
                 return true;
             case R.id.show_subtitle:
                 mSubtitleVisible = !mSubtitleVisible;
@@ -116,7 +124,7 @@ public class CrimeListFragment extends Fragment {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
         if (mCrimeRecyclerViewAdapter == null) {
-            mCrimeRecyclerViewAdapter = new CrimeRecyclerViewAdapter(crimes);
+            mCrimeRecyclerViewAdapter = new CrimeRecyclerViewAdapter(crimes, mCallbacks);
             mRecyclerView.setAdapter(mCrimeRecyclerViewAdapter);
         } else {
             mCrimeRecyclerViewAdapter.setCrimes(crimes);

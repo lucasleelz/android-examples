@@ -14,9 +14,11 @@ import java.util.List;
 public class CrimeRecyclerViewAdapter extends RecyclerView.Adapter<CrimeRecyclerViewAdapter.CrimeHolder> {
 
     private List<Crime> mCrimes;
+    private CrimeListFragment.Callbacks mCallbacks;
 
-    public CrimeRecyclerViewAdapter(List<Crime> crimes) {
+    public CrimeRecyclerViewAdapter(List<Crime> crimes, CrimeListFragment.Callbacks callbacks) {
         mCrimes = crimes;
+        mCallbacks = callbacks;
     }
 
     @Override
@@ -64,8 +66,7 @@ public class CrimeRecyclerViewAdapter extends RecyclerView.Adapter<CrimeRecycler
             mCrimeDateTextView.setText(mCrime.getFormatDateString());
 
             mView.setOnClickListener(view -> {
-                Intent intent = CrimePagerActivity.newIntent(view.getContext(), mCrime.getId());
-                view.getContext().startActivity(intent);
+                mCallbacks.onCrimeSelected(crime);
             });
 
             mIsSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
