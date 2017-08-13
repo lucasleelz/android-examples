@@ -113,7 +113,6 @@ public class CrimeListFragment extends Fragment {
             case R.id.show_subtitle:
                 mSubtitleVisible = !mSubtitleVisible;
                 getActivity().invalidateOptionsMenu();
-                ;
                 updateSubtitle();
                 return true;
             default:
@@ -139,7 +138,7 @@ public class CrimeListFragment extends Fragment {
         int crimeCount = crimeLab.getCrimes().size();
         String subtitle = getString(R.string.subtitle_format, crimeCount);
         if (!mSubtitleVisible) {
-            return;
+            subtitle = "";
         }
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.getSupportActionBar().setSubtitle(subtitle);
