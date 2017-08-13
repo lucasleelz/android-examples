@@ -96,7 +96,7 @@ public class CrimeLab {
         result.put(CrimeTable.Cols.UUID, crime.getId().toString());
         result.put(CrimeTable.Cols.TITLE, crime.getTitle());
         result.put(CrimeTable.Cols.DATE, crime.getDate().getTime());
-        result.put(CrimeTable.Cols.SOLVED, crime.isSolved() ? 1 : 0);
+        result.put(CrimeTable.Cols.SOLVED, crime.isSolved() ? Crime.SOLVED : Crime.UNSOLVED);
         result.put(CrimeTable.Cols.SUSPECT, crime.getSuspect());
         return result;
     }

@@ -11,6 +11,9 @@ import java.util.UUID;
  */
 public class Crime {
 
+    public static final int SOLVED = 1;
+    public static final int UNSOLVED = 1;
+
     private UUID mId;
     private String mTitle;
     private Date mDate;
