@@ -55,7 +55,7 @@ public class CrimeListFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
-        if (view instanceof  RecyclerView) {
+        if (view instanceof RecyclerView) {
             mRecyclerView = (RecyclerView) view;
         }
         if (savedInstanceState != null) {
@@ -112,7 +112,8 @@ public class CrimeListFragment extends Fragment {
                 return true;
             case R.id.show_subtitle:
                 mSubtitleVisible = !mSubtitleVisible;
-                getActivity().invalidateOptionsMenu();;
+                getActivity().invalidateOptionsMenu();
+                ;
                 updateSubtitle();
                 return true;
             default:
@@ -120,7 +121,7 @@ public class CrimeListFragment extends Fragment {
         }
     }
 
-    private void updateUI() {
+    public void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
         if (mCrimeRecyclerViewAdapter == null) {
