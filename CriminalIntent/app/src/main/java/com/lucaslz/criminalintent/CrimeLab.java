@@ -9,6 +9,8 @@ import com.lucaslz.criminalintent.storage.CrimeBaseHelper;
 import com.lucaslz.criminalintent.storage.CrimeCursorWrapper;
 import com.lucaslz.criminalintent.storage.CrimeDbSchema.CrimeTable;
 
+import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -82,6 +84,11 @@ public class CrimeLab {
                 getContentValues(crime),
                 CrimeTable.Cols.UUID + " = ? ",
                 new String[]{uuidString});
+    }
+
+    public File getPhotoFile(Crime crime) {
+        File filesDir = mContext.getFilesDir();
+        return new File(filesDir, crime.getPhotoFilename());
     }
 
     private static ContentValues getContentValues(Crime crime) {
