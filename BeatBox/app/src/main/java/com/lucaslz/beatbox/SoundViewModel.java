@@ -31,6 +31,6 @@ public class SoundViewModel extends BaseObservable {
     }
 
     public void onClickButton() {
-        Log.i("click button", "点击按钮！！！");
+        mBeatBox.play(mSound);
     }
 }
