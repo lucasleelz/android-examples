@@ -1,13 +1,18 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryDark">@color/dark_red</item>
+        <item name="colorAccent">@color/gray</item>
+        <item name="buttonStyle">@style/BeatBoxButtonParent</item>
     </style>
 
     <style name="BeatBoxButton">
+        <item name="android:background">@color/dark_blue</item>
+    </style>
+
+    <style name="BeatBoxButtonParent" parent="Widget.AppCompat.Button">
         <item name="android:background">@color/dark_blue</item>
     </style>
 
