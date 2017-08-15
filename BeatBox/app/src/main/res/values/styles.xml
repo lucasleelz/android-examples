@@ -11,7 +11,13 @@
         <item name="android:background">@color/dark_blue</item>
     </style>
 
+    <!-- 样式继承，一般用于项目内部 -->
     <style name="BeatBoxButton.Strong">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 样式继承，一般用于继承外部样式库，如android库的-->
+    <style name="StrongBeatBoxButton" parent="BeatBoxButton">
         <item name="android:textStyle">bold</item>
     </style>
 </resources>
