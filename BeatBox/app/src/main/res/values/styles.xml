@@ -13,7 +13,7 @@
     </style>
 
     <style name="BeatBoxButtonParent" parent="Widget.AppCompat.Button">
-        <item name="android:background">@color/dark_blue</item>
+        <item name="android:background">@drawable/button_beat_box_normal</item>
     </style>
 
     <!-- 样式继承，一般用于项目内部 -->
@@ -26,3 +26,4 @@
         <item name="android:textStyle">bold</item>
     </style>
 </resources>
+

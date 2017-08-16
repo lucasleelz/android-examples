@@ -8,12 +8,17 @@
             type="com.lucaslz.beatbox.SoundViewModel" />
     </data>
 
-    <Button
-        style="@style/BeatBoxButton.Strong"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:background="?attr/colorAccent"
-        android:layout_height="120dp"
-        android:text="@{viewModal.title}"
-        android:onClick="@{(view) -> viewModal.onClickButton()}"
-        tools:text="Sound name" />
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <Button
+            style="@style/BeatBoxButtonParent"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text="@{viewModal.title}"
+            android:onClick="@{(view) -> viewModal.onClickButton()}"
+            tools:text="Sound name" />
+    </FrameLayout>
 </layout>
