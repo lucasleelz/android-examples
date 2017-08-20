@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -67,7 +69,7 @@ public class NerdLauncherFragment extends Fragment {
         public ActivityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater
-                    .inflate(android.R.layout.simple_list_item_1, parent, false);
+                    .inflate(R.layout.fragment_nerd_launcher_item, parent, false);
             return new ActivityViewHolder(view);
         }
 
@@ -87,17 +89,21 @@ public class NerdLauncherFragment extends Fragment {
 
         private ResolveInfo mResolveInfo;
         private TextView mNameTextView;
+        private ImageView mAppIconImageView;
 
         private ActivityViewHolder(View itemView) {
             super(itemView);
-            mNameTextView = (TextView) itemView;
+            mNameTextView = itemView.findViewById(R.id.app_name_text_view);
             mNameTextView.setOnClickListener(view -> {
                 ActivityInfo activityInfo = mResolveInfo.activityInfo;
                 Intent intent = new Intent(Intent.ACTION_MAIN)
-                        .setClassName(activityInfo.applicationInfo.packageName, activityInfo.name)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        .setClassName(activityInfo.applicationInfo.packageName, activityInfo.name);
+//                         在新的任务中启动Activity。实际上就是唤醒了其他的应用。
+//                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             });
+
+            mAppIconImageView = itemView.findViewById(R.id.app_icon_image_view);
         }
 
         private void bindActivity(ResolveInfo resolveInfo) {
@@ -105,6 +111,8 @@ public class NerdLauncherFragment extends Fragment {
             PackageManager packageManager = getActivity().getPackageManager();
             String appName = mResolveInfo.loadLabel(packageManager).toString();
             mNameTextView.setText(appName);
+            Drawable appIcon = mResolveInfo.loadIcon(packageManager);
+            mAppIconImageView.setImageDrawable(appIcon);
         }
     }
 }
