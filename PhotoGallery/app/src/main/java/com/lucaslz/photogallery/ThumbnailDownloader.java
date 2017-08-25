@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.os.Process;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.LruCache;
 
@@ -50,7 +51,7 @@ public class ThumbnailDownloader<T> extends HandlerThread {
     public void queueThumbnail(T target, String url) {
         Log.i(TAG, "Got a URL:" + url);
 
-        if (url == null || "".equals(url)) {
+        if (TextUtils.isEmpty(url)) {
             mRequestMap.remove(target);
             return;
         }
@@ -100,7 +101,7 @@ public class ThumbnailDownloader<T> extends HandlerThread {
         try {
             T target = (T) obj;
             final String url = mRequestMap.get(target);
-            if (url == null || "".equals(url)) {
+            if (TextUtils.isEmpty(url)) {
                 mRequestMap.remove(target);
                 Log.i(TAG, "Got a message for URL:" + url);
                 return;
@@ -110,7 +111,7 @@ public class ThumbnailDownloader<T> extends HandlerThread {
             mResponseHandler.post(() -> {
                 // 使用equals 会导致闪退。
                 String currentUrl = mRequestMap.get(target);
-                if (currentUrl == null || !url.equals(mRequestMap.get(target)) || mHasQuit) {
+                if (TextUtils.isEmpty(currentUrl) || !url.equals(mRequestMap.get(target)) || mHasQuit) {
                     mRequestMap.remove(target);
                     Log.i(TAG, "URl 不相等:");
                     return;
