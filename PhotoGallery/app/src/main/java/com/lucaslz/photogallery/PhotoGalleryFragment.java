@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class PhotoGalleryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        new FetchItemsTask().execute();
+        new FetchItemsTask(this).execute();
 
         Handler responseHandler = new Handler();
         mThumbnailDownloader = new ThumbnailDownloader<>(responseHandler);
@@ -79,7 +80,7 @@ public class PhotoGalleryFragment extends Fragment {
 
         private List<GalleryItem> mGalleryItems;
 
-        public PhotoAdapter(List<GalleryItem> galleryItems) {
+        private PhotoAdapter(List<GalleryItem> galleryItems) {
             mGalleryItems = galleryItems;
         }
 
@@ -108,17 +109,23 @@ public class PhotoGalleryFragment extends Fragment {
 
         private ImageView mItemImageView;
 
-        public PhotoHolder(View itemView) {
+        private PhotoHolder(View itemView) {
             super(itemView);
             mItemImageView = itemView.findViewById(R.id.item_image_view);
         }
 
-        public void bindDrawable(Drawable drawable) {
+        private void bindDrawable(Drawable drawable) {
             mItemImageView.setImageDrawable(drawable);
         }
     }
 
-    private class FetchItemsTask extends AsyncTask<Void, Void, List<GalleryItem>> {
+    private static class FetchItemsTask extends AsyncTask<Void, Void, List<GalleryItem>> {
+
+        private WeakReference<PhotoGalleryFragment> mPhotoGalleryFragmentWeakReference;
+
+        private FetchItemsTask(PhotoGalleryFragment photoGalleryFragment) {
+            mPhotoGalleryFragmentWeakReference = new WeakReference<>(photoGalleryFragment);
+        }
 
         @Override
         protected List<GalleryItem> doInBackground(Void... params) {
@@ -127,8 +134,12 @@ public class PhotoGalleryFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<GalleryItem> items) {
-            mItems = items;
-            setupAdapter();;
+            PhotoGalleryFragment photoGalleryFragment = mPhotoGalleryFragmentWeakReference.get();
+            if (photoGalleryFragment == null) {
+                return;
+            }
+            photoGalleryFragment.mItems = items;
+            photoGalleryFragment.setupAdapter();
         }
     }
 }

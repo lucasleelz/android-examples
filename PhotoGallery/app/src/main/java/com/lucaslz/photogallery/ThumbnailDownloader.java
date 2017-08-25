@@ -10,6 +10,7 @@ import android.util.Log;
 import android.util.LruCache;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -31,11 +32,11 @@ public class ThumbnailDownloader<T> extends HandlerThread {
         void onThumbnailDownloaded(T target, Bitmap thumbnail);
     }
 
-    public void setThumbnailDownloaderListener(ThumbnailDownloaderListener<T> thumbnailDownloaderListener) {
-        mThumbnailDownloaderListener = thumbnailDownloaderListener;
+    protected void setThumbnailDownloaderListener(ThumbnailDownloaderListener<T> listener) {
+        mThumbnailDownloaderListener = listener;
     }
 
-    public ThumbnailDownloader(Handler responseHandler) {
+    protected ThumbnailDownloader(Handler responseHandler) {
         super(TAG, Process.THREAD_PRIORITY_LESS_FAVORABLE);
         mResponseHandler = responseHandler;
     }
@@ -49,7 +50,7 @@ public class ThumbnailDownloader<T> extends HandlerThread {
     public void queueThumbnail(T target, String url) {
         Log.i(TAG, "Got a URL:" + url);
 
-        if (url == null) {
+        if (url == null || "".equals(url)) {
             mRequestMap.remove(target);
             return;
         }
@@ -67,33 +68,51 @@ public class ThumbnailDownloader<T> extends HandlerThread {
 
     @Override
     protected void onLooperPrepared() {
-        mRequestHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                if (msg.what == MESSAGE_DOWNLOAD) {
-                    T target = (T) msg.obj;
-                    Log.i(TAG, "Got a message for URL:" + mRequestMap.get(target));
-                    handleRequest(target);
-                }
-            }
-        };
+        mRequestHandler = new RequestHandler(this);
     }
 
-    public void clearQueue() {
+    private final static class RequestHandler extends Handler {
+        private WeakReference<ThumbnailDownloader> mThumbnailDownloaderWeakReference;
+
+        private RequestHandler(ThumbnailDownloader reference) {
+            mThumbnailDownloaderWeakReference = new WeakReference<>(reference);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what != MESSAGE_DOWNLOAD) {
+                return;
+            }
+            ThumbnailDownloader thumbnailDownloader = mThumbnailDownloaderWeakReference.get();
+            if (thumbnailDownloader == null) {
+                return;
+            }
+            thumbnailDownloader.handleRequest(msg.obj);
+        }
+    }
+
+    protected void clearQueue() {
         mRequestHandler.removeMessages(MESSAGE_DOWNLOAD);
         mRequestMap.clear();
     }
 
-    private void handleRequest(final T target) {
-        final String url = mRequestMap.get(target);
-        if (url == null) {
-            return;
-        }
+    private void handleRequest(final Object obj) {
         try {
+            T target = (T) obj;
+            final String url = mRequestMap.get(target);
+            if (url == null || "".equals(url)) {
+                mRequestMap.remove(target);
+                Log.i(TAG, "Got a message for URL:" + url);
+                return;
+            }
             byte[] bitmapBytes = new FlickrFetchr().getUrlBytes(url);
             final Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
             mResponseHandler.post(() -> {
-                if (!mRequestMap.get(target).equals(url) || mHasQuit) {
+                // 使用equals 会导致闪退。
+                String currentUrl = mRequestMap.get(target);
+                if (currentUrl == null || !url.equals(mRequestMap.get(target)) || mHasQuit) {
+                    mRequestMap.remove(target);
+                    Log.i(TAG, "URl 不相等:");
                     return;
                 }
                 mThumbnailCache.put(url, bitmap);
