@@ -23,21 +23,41 @@ public class FlickrFetchr {
 
     private static final String TAG = "FlickrFetchr";
     private static final String API_KEY = "0d328625487f4b99a1547d1ca938ed98";
-    public static final String ser = "650be9a0c74f5ac7";
+    private static final String ser = "650be9a0c74f5ac7";
+    private static final String FETCH_RECENTS_METHOD = "flickr.photos.getRecent";
+    private static final String SEARCH_METHOD = "flickr.photos.search";
 
-    public List<GalleryItem> fetchItems() {
+    private static final Uri ENDPOINT = Uri.parse("https://api.flickr.com/services/rest/")
+            .buildUpon()
+            .appendQueryParameter("api_key", API_KEY)
+            .appendQueryParameter("format", "json")
+            .appendQueryParameter("nojsoncallback", "1")
+            .appendQueryParameter("extras", "url_s") // 有小图片就直接返回URL。
+            .build();
+
+    private String buildUrl(String method, String query) {
+        Uri.Builder builder = ENDPOINT.buildUpon().appendQueryParameter("method", method);
+        if (method.equals(SEARCH_METHOD)) {
+            builder.appendQueryParameter("text", query);
+        }
+        return builder.build().toString();
+    }
+
+    public List<GalleryItem> fetchRecentPhotos() {
+        return downloadGalleryItem(
+                buildUrl(FETCH_RECENTS_METHOD, null)
+        );
+    }
+
+    public List<GalleryItem> searchPhotos(String query) {
+        return downloadGalleryItem(
+                buildUrl(SEARCH_METHOD, query)
+        );
+    }
+
+    private List<GalleryItem> downloadGalleryItem(String url) {
+        List<GalleryItem> items = new ArrayList<>();
         try {
-            String url = Uri.parse("https://api.flickr.com/services/rest/")
-                    .buildUpon()
-                    .appendQueryParameter("method", "flickr.photos.getRecent")
-                    .appendQueryParameter("api_key", API_KEY)
-                    .appendQueryParameter("format", "json")
-                    .appendQueryParameter("nojsoncallback", "1")
-                    .appendQueryParameter("extras", "url_s") // 有小图片就直接返回URL。
-                    .build().toString();
-
-            Log.i(TAG, "URL: " + url);
-
             String jsonString = getUrlString(url);
             JSONObject jsonBody = new JSONObject(jsonString);
             return parseItems(jsonBody);
@@ -71,7 +91,7 @@ public class FlickrFetchr {
         }
     }
 
-    public String getUrlString(String urlSpec) throws IOException {
+    private String getUrlString(String urlSpec) throws IOException {
         return new String(getUrlBytes(urlSpec));
     }
 
