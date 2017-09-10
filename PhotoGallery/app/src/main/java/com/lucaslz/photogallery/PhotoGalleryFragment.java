@@ -1,5 +1,6 @@
 package com.lucaslz.photogallery;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -58,6 +59,11 @@ public class PhotoGalleryFragment extends Fragment {
         mThumbnailDownloader.start();
         mThumbnailDownloader.getLooper();
         Log.i(TAG, "Background thread started");
+
+//        Intent intent = PollService.newIntent(getActivity());
+//        getActivity().startService(intent);
+
+        PollService.setServiceAlarm(getActivity(), true);
     }
 
     @Nullable
