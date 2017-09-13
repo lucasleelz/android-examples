@@ -160,6 +160,8 @@ public class PhotoGalleryFragment extends VisibleFragment {
         @Override
         public void onBindViewHolder(PhotoHolder holder, int position) {
             GalleryItem galleryItem = mGalleryItems.get(position);
+            holder.bindGalleryItem(galleryItem);
+
             Drawable placeholder = getResources().getDrawable(R.drawable.bill_up_close);
             holder.bindDrawable(placeholder);
             mThumbnailDownloader.queueThumbnail(holder, galleryItem.getUrl());
@@ -175,9 +177,19 @@ public class PhotoGalleryFragment extends VisibleFragment {
 
         private ImageView mItemImageView;
 
+        private GalleryItem mGalleryItem;
+
         private PhotoHolder(View itemView) {
             super(itemView);
             mItemImageView = itemView.findViewById(R.id.item_image_view);
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_VIEW, mGalleryItem.getPhotoPageUri());
+                startActivity(intent);
+            });
+        }
+
+        public void bindGalleryItem(GalleryItem galleryItem) {
+            mGalleryItem = galleryItem;
         }
 
         private void bindDrawable(Drawable drawable) {
