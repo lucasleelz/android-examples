@@ -183,7 +183,11 @@ public class PhotoGalleryFragment extends VisibleFragment {
             super(itemView);
             mItemImageView = itemView.findViewById(R.id.item_image_view);
             itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(Intent.ACTION_VIEW, mGalleryItem.getPhotoPageUri());
+//                隐式Intent的方式， 比较简单的处理。
+//                Intent intent = new Intent(Intent.ACTION_VIEW, mGalleryItem.getPhotoPageUri());
+//                startActivity(intent);
+
+                Intent intent = PhotoPageActivity.newIntent(getActivity(), mGalleryItem.getPhotoPageUri());
                 startActivity(intent);
             });
         }
