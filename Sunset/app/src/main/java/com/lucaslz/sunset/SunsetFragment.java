@@ -1,5 +1,6 @@
 package com.lucaslz.sunset;
 
+import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.res.Resources;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnimationSet;
 
 /**
  * Created by lucas lee <llzqingdao2012gmail.com> on 2017/9/22.
@@ -65,7 +67,17 @@ public class SunsetFragment extends Fragment {
                 .ofInt(mSkyView, backgroundColorPropertyName, mBlueSkyColor, mSunsetSkyColor)
                 .setDuration(animatorDuration);
         sunsetSkyAnimator.setEvaluator(new ArgbEvaluator());
-        heightAnimator.start();
-        sunsetSkyAnimator.start();
+
+        ObjectAnimator nightSkyAnimator = ObjectAnimator
+                .ofInt(mSkyView, backgroundColorPropertyName, mSunsetSkyColor, mNightSkyColor)
+                .setDuration(1500);
+        nightSkyAnimator.setEvaluator(new ArgbEvaluator());
+
+        AnimatorSet animationSet = new AnimatorSet();
+        animationSet
+                .play(heightAnimator)
+                .with(sunsetSkyAnimator)
+                .before(nightSkyAnimator);
+        animationSet.start();
     }
 }
