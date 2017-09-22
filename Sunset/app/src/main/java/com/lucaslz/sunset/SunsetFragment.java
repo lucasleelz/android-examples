@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 
 /**
  * Created by lucas lee <llzqingdao2012gmail.com> on 2017/9/22.
@@ -43,6 +44,7 @@ public class SunsetFragment extends Fragment {
         ObjectAnimator heightAnimator = ObjectAnimator
                 .ofFloat(mSunView, "y", sunYStart, sunYEnd)
                 .setDuration(3200);
+        heightAnimator.setInterpolator(new AccelerateInterpolator());
         heightAnimator.start();
     }
 }
