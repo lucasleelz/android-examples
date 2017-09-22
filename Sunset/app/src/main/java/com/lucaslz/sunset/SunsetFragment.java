@@ -1,6 +1,8 @@
 package com.lucaslz.sunset;
 
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,11 +16,17 @@ import android.view.animation.AccelerateInterpolator;
  */
 public class SunsetFragment extends Fragment {
 
+    private static final String yPropertyName = "y";
+    private static final String backgroundColorPropertyName = "backgroundColor";
+    private static final int animatorDuration = 3000;
+
     private View mSceneView;
-
     private View mSunView;
-
     private View mSkyView;
+
+    private int mBlueSkyColor;
+    private int mSunsetSkyColor;
+    private int mNightSkyColor;
 
     public static SunsetFragment newInstance() {
         return new SunsetFragment();
@@ -31,6 +39,13 @@ public class SunsetFragment extends Fragment {
         mSceneView = view;
         mSunView = view.findViewById(R.id.sun);
         mSkyView = view.findViewById(R.id.sky);
+
+        Resources resources = getResources();
+        mBlueSkyColor = resources.getColor(R.color.blue_sky);
+        mSunsetSkyColor = resources.getColor(R.color.sunset_sky);
+        mNightSkyColor = resources.getColor(R.color.night_sky);
+
+
         mSceneView.setOnClickListener(v -> {
             startAnimation();
         });
@@ -42,9 +57,15 @@ public class SunsetFragment extends Fragment {
         float sunYEnd = mSkyView.getHeight();
 
         ObjectAnimator heightAnimator = ObjectAnimator
-                .ofFloat(mSunView, "y", sunYStart, sunYEnd)
-                .setDuration(3200);
+                .ofFloat(mSunView, yPropertyName, sunYStart, sunYEnd)
+                .setDuration(animatorDuration);
         heightAnimator.setInterpolator(new AccelerateInterpolator());
+
+        ObjectAnimator sunsetSkyAnimator = ObjectAnimator
+                .ofInt(mSkyView, backgroundColorPropertyName, mBlueSkyColor, mSunsetSkyColor)
+                .setDuration(animatorDuration);
+        sunsetSkyAnimator.setEvaluator(new ArgbEvaluator());
         heightAnimator.start();
+        sunsetSkyAnimator.start();
     }
 }
