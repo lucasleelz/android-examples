@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AnimationSet;
 
 /**
  * Created by lucas lee <llzqingdao2012gmail.com> on 2017/9/22.
@@ -22,7 +21,6 @@ public class SunsetFragment extends Fragment {
     private static final String backgroundColorPropertyName = "backgroundColor";
     private static final int animatorDuration = 3000;
 
-    private View mSceneView;
     private View mSunView;
     private View mSkyView;
 
@@ -38,7 +36,6 @@ public class SunsetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sunset, container, false);
-        mSceneView = view;
         mSunView = view.findViewById(R.id.sun);
         mSkyView = view.findViewById(R.id.sky);
 
@@ -47,10 +44,7 @@ public class SunsetFragment extends Fragment {
         mSunsetSkyColor = resources.getColor(R.color.sunset_sky);
         mNightSkyColor = resources.getColor(R.color.night_sky);
 
-
-        mSceneView.setOnClickListener(v -> {
-            startAnimation();
-        });
+        view.setOnClickListener(v -> startAnimation());
         return view;
     }
 
