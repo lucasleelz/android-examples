@@ -22,7 +22,15 @@ import android.widget.ImageView;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,8 +43,12 @@ public class LocatrFragment extends SupportMapFragment {
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
     private static final int REQUEST_LOCATION_PERMISSIONS = 0;
-
     private GoogleApiClient mGoogleApiClient;
+    private GoogleMap mGoogleMap;
+
+    private Bitmap mMapImage;
+    private GalleryItem mMapItem;
+    private Location mCurrentLocation;
 
     public static LocatrFragment newInstance() {
         return new LocatrFragment();
@@ -61,6 +73,11 @@ public class LocatrFragment extends SupportMapFragment {
                     }
                 })
                 .build();
+
+        getMapAsync(googleMap -> {
+            mGoogleMap = googleMap;
+            updateUI();
+        });
     }
 
     // R.menu 报错，检查是否存在menu资源文件夹。里面是否包含对应的文件。如果还不行，确保
@@ -132,14 +149,47 @@ public class LocatrFragment extends SupportMapFragment {
         return result == PackageManager.PERMISSION_GRANTED;
     }
 
+    private void updateUI() {
+        if (mGoogleMap == null || mMapItem == null) {
+            return;
+        }
+        LatLng itemPoint = new LatLng(mMapItem.getLat(), mMapItem.getLon());
+        LatLng myPoint = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+
+        BitmapDescriptor itemBitmap = BitmapDescriptorFactory.fromBitmap(mMapImage);
+
+        MarkerOptions itemMarker = new MarkerOptions()
+                .position(itemPoint)
+                .icon(itemBitmap);
+
+        MarkerOptions myMarker = new MarkerOptions()
+                .position(myPoint);
+
+        mGoogleMap.clear();
+        mGoogleMap.addMarker(itemMarker);
+        mGoogleMap.addMarker(myMarker);
+
+
+        LatLngBounds bounds = new LatLngBounds.Builder()
+                .include(itemPoint)
+                .include(myPoint)
+                .build();
+
+        int margin = getResources().getDimensionPixelSize(R.dimen.map_inset_margin);
+        CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bounds, margin);
+        mGoogleMap.animateCamera(update);
+    }
+
     private class SearchTask extends AsyncTask<Location, Void, Void> {
         private GalleryItem mGalleryItem;
         private Bitmap mBitmap;
+        private Location mLocation;
 
         @Override
         protected Void doInBackground(Location... params) {
+            mLocation = params[0];
             FlickrFetchr fetchr = new FlickrFetchr();
-            List<GalleryItem> items = fetchr.searchPhotos(params[0]);
+            List<GalleryItem> items = fetchr.searchPhotos(this.mLocation);
             if (items.size() == 0) {
                 return null;
             }
@@ -155,6 +205,11 @@ public class LocatrFragment extends SupportMapFragment {
 
         @Override
         protected void onPostExecute(Void result) {
+            mMapImage = mBitmap;
+            mMapItem = mGalleryItem;
+            mCurrentLocation = mLocation;
+
+            updateUI();
         }
     }
 }
