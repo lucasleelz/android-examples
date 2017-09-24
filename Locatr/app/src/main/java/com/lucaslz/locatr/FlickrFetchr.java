@@ -1,5 +1,6 @@
 package com.lucaslz.locatr;
 
+import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 
@@ -35,38 +36,20 @@ public class FlickrFetchr {
             .appendQueryParameter("extras", "url_s") // 有小图片就直接返回URL。
             .build();
 
-    private String buildUrl(String method, String query) {
-        Uri.Builder builder = ENDPOINT.buildUpon().appendQueryParameter("method", method);
-        if (method.equals(SEARCH_METHOD)) {
-            builder.appendQueryParameter("text", query);
-        }
-        return builder.build().toString();
-    }
-
-    public List<GalleryItem> fetchRecentPhotos() {
-        return downloadGalleryItem(
-                buildUrl(FETCH_RECENTS_METHOD, null)
-        );
-    }
-
     public List<GalleryItem> searchPhotos(String query) {
         return downloadGalleryItem(
                 buildUrl(SEARCH_METHOD, query)
         );
     }
 
-    private List<GalleryItem> downloadGalleryItem(String url) {
-        List<GalleryItem> items = new ArrayList<>();
-        try {
-            String jsonString = getUrlString(url);
-            JSONObject jsonBody = new JSONObject(jsonString);
-            return parseItems(jsonBody);
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to fetch items", e);
-        } catch (JSONException e) {
-            Log.e(TAG, "Failed to parse JSON", e);
-        }
-        return Collections.emptyList();
+    public List<GalleryItem> searchPhotos(Location location) {
+        return downloadGalleryItem(buildUrl(location));
+    }
+
+    public List<GalleryItem> fetchRecentPhotos() {
+        return downloadGalleryItem(
+                buildUrl(FETCH_RECENTS_METHOD, null)
+        );
     }
 
     public byte[] getUrlBytes(String urlSpec) throws IOException {
@@ -116,4 +99,36 @@ public class FlickrFetchr {
         }
         return items;
     }
+
+    private List<GalleryItem> downloadGalleryItem(String url) {
+        List<GalleryItem> items = new ArrayList<>();
+        try {
+            String jsonString = getUrlString(url);
+            JSONObject jsonBody = new JSONObject(jsonString);
+            return parseItems(jsonBody);
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to fetch items", e);
+        } catch (JSONException e) {
+            Log.e(TAG, "Failed to parse JSON", e);
+        }
+        return Collections.emptyList();
+    }
+
+
+    private String buildUrl(String method, String query) {
+        Uri.Builder builder = ENDPOINT.buildUpon().appendQueryParameter("method", method);
+        if (method.equals(SEARCH_METHOD)) {
+            builder.appendQueryParameter("text", query);
+        }
+        return builder.build().toString();
+    }
+
+    private String buildUrl(Location location) {
+        return ENDPOINT.buildUpon()
+                .appendQueryParameter("method", SEARCH_METHOD)
+                .appendQueryParameter("lat", "" + location.getLatitude())
+                .appendQueryParameter("lon", "" + location.getLongitude())
+                .build().toString();
+    }
+
 }
