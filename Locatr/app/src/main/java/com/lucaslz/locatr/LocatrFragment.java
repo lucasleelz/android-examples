@@ -1,7 +1,6 @@
 package com.lucaslz.locatr;
 
 import android.Manifest;
-import android.app.PendingIntent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,17 +20,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Result;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.SupportMapFragment;
 
 import java.io.IOException;
 import java.util.List;
 
-public class LocatrFragment extends Fragment {
+public class LocatrFragment extends SupportMapFragment {
 
     private static final String TAG = "LocatrFragment";
     private static final String[] LOCATION_PERMISSIONS = new String[]{
@@ -41,7 +36,6 @@ public class LocatrFragment extends Fragment {
     };
     private static final int REQUEST_LOCATION_PERMISSIONS = 0;
 
-    private ImageView mImageView;
     private GoogleApiClient mGoogleApiClient;
 
     public static LocatrFragment newInstance() {
@@ -67,14 +61,6 @@ public class LocatrFragment extends Fragment {
                     }
                 })
                 .build();
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_locatr, container, false);
-        mImageView = view.findViewById(R.id.image);
-        return view;
     }
 
     // R.menu 报错，检查是否存在menu资源文件夹。里面是否包含对应的文件。如果还不行，确保
@@ -169,7 +155,6 @@ public class LocatrFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
-            mImageView.setImageBitmap(mBitmap);
         }
     }
 }
