@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 
 import java.text.NumberFormat;
 
-public class QuizActivity extends AppCompatActivity {
+public class QuizActivity extends BaseActivity {
 
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
