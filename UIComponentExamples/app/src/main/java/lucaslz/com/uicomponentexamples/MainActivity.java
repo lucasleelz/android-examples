@@ -1,13 +1,15 @@
 package lucaslz.com.uicomponentexamples;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 
-public class MainActivity extends AppCompatActivity {
+import lucaslz.com.component.activity.SingleFragmentActivity;
+
+public class MainActivity extends SingleFragmentActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected Fragment createFragment() {
+        return MainFragment.newInstance();
     }
 }
