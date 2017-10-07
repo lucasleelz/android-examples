@@ -3,6 +3,7 @@ package lucaslz.com.uicomponentexamples;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,8 +29,6 @@ public class MainFragment extends Fragment {
         return fragment;
     }
 
-    private RecyclerView mRecyclerView;
-
     private List<String> dataSource = ImmutableList.of(
             "Layout",
             "TextView",
@@ -47,9 +46,10 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        mRecyclerView = view.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(new ExampleAdapter(dataSource));
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(new ExampleAdapter(dataSource));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         return view;
     }
 
@@ -57,7 +57,7 @@ public class MainFragment extends Fragment {
 
         private List<String> dataSource;
 
-        public ExampleAdapter(List<String> dataSource) {
+        private ExampleAdapter(List<String> dataSource) {
             this.dataSource = dataSource;
         }
 
@@ -84,12 +84,12 @@ public class MainFragment extends Fragment {
 
         private TextView mNameTextView;
 
-        public ExampleViewHolder(View itemView) {
+        private ExampleViewHolder(View itemView) {
             super(itemView);
             mNameTextView = itemView.findViewById(R.id.name_text_view);
         }
 
-        public void setName(String name) {
+        private void setName(String name) {
             mNameTextView.setText(name);
         }
     }
