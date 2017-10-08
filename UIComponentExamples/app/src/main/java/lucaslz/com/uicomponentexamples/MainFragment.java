@@ -2,6 +2,7 @@ package lucaslz.com.uicomponentexamples;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,18 +31,26 @@ public class MainFragment extends Fragment {
         return fragment;
     }
 
-    private List<String> dataSource = ImmutableList.of(
-            "Layout",
-            "TextView",
-            "Button",
-            "EditText",
-            "ImageView",
-            "ProgressView",
-            "AlertDialog",
-            "ProgressDialog",
-            "ListView",
-            "RecyclerView"
-    );
+    private List<Example> dataSource = new ArrayList<>();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        dataSource.addAll(
+                ImmutableList.of(
+                        new Example("Layout 布局", LayoutActivity.newIntent(getContext())),
+                        new Example("TextView", null),
+                        new Example("Button", null),
+                        new Example("EditText", null),
+                        new Example("ImageView", null),
+                        new Example("ProgressView", null),
+                        new Example("AlertDialog", null),
+                        new Example("ProgressDialog", null),
+                        new Example("ListView", null),
+                        new Example("RecyclerView", null))
+        );
+    }
 
     @Nullable
     @Override
@@ -55,23 +65,23 @@ public class MainFragment extends Fragment {
 
     class ExampleAdapter extends RecyclerView.Adapter<ExampleViewHolder> {
 
-        private List<String> dataSource;
+        private List<Example> dataSource;
 
-        private ExampleAdapter(List<String> dataSource) {
+        private ExampleAdapter(List<Example> dataSource) {
             this.dataSource = dataSource;
         }
 
         @Override
         public ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(R.layout.item_main, parent, false);
-            return new ExampleViewHolder(view);
+            View itemView = layoutInflater.inflate(R.layout.item_main, parent, false);
+            return new ExampleViewHolder(itemView);
         }
 
         @Override
         public void onBindViewHolder(ExampleViewHolder holder, int position) {
-            String name = this.dataSource.get(position);
-            holder.setName(name);
+            Example example = this.dataSource.get(position);
+            holder.bind(example);
         }
 
         @Override
@@ -89,8 +99,15 @@ public class MainFragment extends Fragment {
             mNameTextView = itemView.findViewById(R.id.name_text_view);
         }
 
-        private void setName(String name) {
-            mNameTextView.setText(name);
+        private void bind(Example example) {
+            mNameTextView.setText(example.getName());
+            this.itemView.setOnClickListener(view -> {
+                if (example.getIntent() == null) {
+                    Snackbar.make(this.itemView, example.getName(), Snackbar.LENGTH_LONG).show();
+                } else {
+                    startActivity(example.getIntent());
+                }
+            });
         }
     }
 }

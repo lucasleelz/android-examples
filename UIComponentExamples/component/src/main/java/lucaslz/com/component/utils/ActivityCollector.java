@@ -29,4 +29,7 @@ public final class ActivityCollector {
         }
         sActivities.clear();
     }
+
+    private ActivityCollector() {
+    }
 }

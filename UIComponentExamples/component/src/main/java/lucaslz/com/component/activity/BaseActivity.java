@@ -10,10 +10,9 @@ import lucaslz.com.component.utils.ActivityCollector;
 /**
  * Created by lucas on 2017/10/7.
  */
-
 public class BaseActivity extends AppCompatActivity {
 
-    private static final String TAG = "BaseActivity";
+    private static final String TAG = BaseActivity.class.getSimpleName();
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
