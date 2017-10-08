@@ -35,4 +35,5 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
     implementation "com.google.guava:guava:$rootProject.ext.guavaVersion"
     implementation "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+    // implementation "com.android.support:percent:$rootProject.ext.supportLibraryVersion" // 被删除了，constraint-layout。
 }
