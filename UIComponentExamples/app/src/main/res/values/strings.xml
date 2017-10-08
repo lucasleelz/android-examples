@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UIComponentExamples</string>
+    <string name="layout_name">Layout</string>
 </resources>
