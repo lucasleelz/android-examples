@@ -39,16 +39,16 @@ public class MainFragment extends Fragment {
 
         dataSource.addAll(
                 ImmutableList.of(
-                        new Example("Layout 布局", LayoutActivity.newIntent(getContext())),
-                        new Example("TextView", null),
-                        new Example("Button", null),
-                        new Example("EditText", null),
-                        new Example("ImageView", null),
-                        new Example("ProgressView", null),
-                        new Example("AlertDialog", null),
-                        new Example("ProgressDialog", null),
-                        new Example("ListView", null),
-                        new Example("RecyclerView", null))
+                        new Example("Layout 布局", "Layout"),
+                        new Example("TextView", "Text"),
+                        new Example("Button", "Button"),
+                        new Example("EditText", "EditText"),
+                        new Example("ImageView", "ImageView"),
+                        new Example("ProgressView", "ProgressView"),
+                        new Example("AlertDialog", "AlertDialog"),
+                        new Example("ProgressDialog", "ProgressDialog"),
+                        new Example("ListView", "ListView"),
+                        new Example("RecyclerView", "RecyclerView"))
         );
     }
 
@@ -102,10 +102,10 @@ public class MainFragment extends Fragment {
         private void bind(Example example) {
             mNameTextView.setText(example.getName());
             this.itemView.setOnClickListener(view -> {
-                if (example.getIntent() == null) {
+                if (example.getType() == null) {
                     Snackbar.make(this.itemView, example.getName(), Snackbar.LENGTH_LONG).show();
                 } else {
-                    startActivity(example.getIntent());
+                    startActivity(UIComponentActivity.newIntent(getContext(), example.getType()));
                 }
             });
         }

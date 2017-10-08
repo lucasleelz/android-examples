@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LayoutActivity"
+            android:name=".UIComponentActivity"
             android:label="@string/layout_name" />
     </application>
 

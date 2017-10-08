@@ -1,10 +1,7 @@
 package lucaslz.com.uicomponentexamples;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
@@ -13,16 +10,10 @@ import lucaslz.com.component.activity.SingleFragmentActivity;
 /**
  * Created by lucas on 2017/10/8.
  */
-public class LayoutActivity extends SingleFragmentActivity {
 
-    public static Intent newIntent(Context packageContext) {
-        return new Intent(packageContext, LayoutActivity.class);
-    }
+public abstract class GoBackActivity extends SingleFragmentActivity {
 
-    @Override
-    protected Fragment createFragment() {
-        return LayoutFragment.newInstance();
-    }
+    private String mActionBarTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,5 +34,19 @@ public class LayoutActivity extends SingleFragmentActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void setActionBarTitle(String actionBarTitle) {
+        mActionBarTitle = actionBarTitle;
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) {
+            return;
+        }
+        actionBar.setTitle(actionBarTitle);
+    }
+
+    public String getActionBarTitle() {
+        return mActionBarTitle;
     }
 }

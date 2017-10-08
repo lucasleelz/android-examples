@@ -7,18 +7,18 @@ import android.content.Intent;
  */
 public class Example {
     private String mName;
-    private Intent mIntent;
+    private String mType;
 
-    public Example(String name, Intent intent) {
+    public Example(String name, String type) {
         mName = name;
-        mIntent = intent;
+        mType = type;
     }
 
     public String getName() {
         return mName;
     }
 
-    public Intent getIntent() {
-        return mIntent;
+    public String getType() {
+        return mType;
     }
 }
