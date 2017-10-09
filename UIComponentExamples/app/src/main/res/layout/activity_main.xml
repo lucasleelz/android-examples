@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="lucaslz.com.uicomponentexamples.MainActivity">
+    tools:context="lucaslz.com.uicomponentexamples.com.lucaslz.uicomponentexamples.MainActivity">
 
     <FrameLayout
         android:id="@+id/navigation_fragment_container"
