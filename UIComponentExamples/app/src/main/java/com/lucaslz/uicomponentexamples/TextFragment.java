@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 /**
  * Created by lucas on 2017/10/8.
  */
-
 public class TextFragment extends Fragment {
 
     public static TextFragment newInstance() {
