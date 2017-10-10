@@ -15,4 +15,5 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="header_background_image">header background image</string>
 </resources>

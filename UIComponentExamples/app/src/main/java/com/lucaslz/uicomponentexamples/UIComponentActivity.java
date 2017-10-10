@@ -28,6 +28,10 @@ public class UIComponentActivity extends GoBackActivity {
         if ("Text".equals(type)) {
             return TextFragment.newInstance();
         }
+        if ("CollapsingToolbarLayout".equals(type)) {
+            return CollapsingToolbarLayoutFragment.newInstance();
+        }
+
         return new Fragment();
     }
 }

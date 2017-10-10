@@ -15,4 +15,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="UIComponentActivityAppTheme" parent="AppTheme.NoActionBar">
+    </style>
+
 </resources>

@@ -34,6 +34,7 @@ public class HomeFragment extends Fragment {
 
     private List<Example> mExamples = ImmutableList.of(
             new Example("Layout 布局", "Layout"),
+            new Example("CollapsingToolbarLayout", "CollapsingToolbarLayout"),
             new Example("TextView", "Text"),
             new Example("Button", "Button"),
             new Example("EditText", "EditText"),

@@ -20,6 +20,7 @@
         </activity>
         <activity
             android:name=".UIComponentActivity"
+            android:theme="@style/UIComponentActivityAppTheme"
             android:label="@string/layout_name" />
     </application>
 
