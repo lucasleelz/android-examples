@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -69,7 +70,11 @@ public class MainActivity extends BaseActivity {
     };
 
     private View.OnClickListener mFabOnClickListener = (View view) -> {
-        Toast.makeText(this, "haah", Toast.LENGTH_SHORT).show();
+        Snackbar.make(view, "添加数据", Snackbar.LENGTH_SHORT)
+                .setAction("撤销", (undoView) ->
+                        Toast.makeText(this, "数据已存储", Toast.LENGTH_SHORT).show()
+                ).show();
+
     };
 
     @Override
