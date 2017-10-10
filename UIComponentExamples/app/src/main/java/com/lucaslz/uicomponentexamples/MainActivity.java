@@ -5,6 +5,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,25 +23,29 @@ public class MainActivity extends BaseActivity {
 
     private DrawerLayout mDrawerLayout;
 
+    private Fragment mHomeFragment = HomeFragment.newInstance();
+    private Fragment mDashboardFragment = new Fragment();
+    private Fragment mProfileFragment = ProfileFragment.newInstance();
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnBottomNavigationItemSelectedListener = (MenuItem item) -> {
         FragmentManager fragmentManager = getSupportFragmentManager();
         ActionBar actionBar = getSupportActionBar();
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.navigation_fragment_container, HomeFragment.newInstance())
+                        .replace(R.id.navigation_fragment_container, mHomeFragment)
                         .commit();
                 actionBar.setTitle("Home");
                 return true;
             case R.id.navigation_dashboard:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.navigation_fragment_container, HomeFragment.newInstance())
+                        .replace(R.id.navigation_fragment_container, mDashboardFragment)
                         .commit();
                 actionBar.setTitle("Dashboard");
                 return true;
             case R.id.navigation_profile:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.navigation_fragment_container, ProfileFragment.newInstance())
+                        .replace(R.id.navigation_fragment_container, mProfileFragment)
                         .commit();
                 actionBar.setTitle("Profile");
                 return true;
@@ -104,7 +109,7 @@ public class MainActivity extends BaseActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .add(R.id.navigation_fragment_container, HomeFragment.newInstance())
+                .add(R.id.navigation_fragment_container, mHomeFragment)
                 .commit();
     }
 

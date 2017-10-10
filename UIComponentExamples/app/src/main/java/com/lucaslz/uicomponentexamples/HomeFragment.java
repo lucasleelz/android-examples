@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,23 +32,40 @@ public class HomeFragment extends Fragment {
 
     private List<Example> dataSource = new ArrayList<>();
 
+    private List<Example> mExamples = ImmutableList.of(
+            new Example("Layout 布局", "Layout"),
+            new Example("TextView", "Text"),
+            new Example("Button", "Button"),
+            new Example("EditText", "EditText"),
+            new Example("ImageView", "ImageView"),
+            new Example("ProgressView", "ProgressView"),
+            new Example("AlertDialog", "AlertDialog"),
+            new Example("ProgressDialog", "ProgressDialog"),
+            new Example("ListView", "ListView"));
+
+    private ExampleAdapter mExampleAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = () -> {
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            getActivity().runOnUiThread(() -> {
+                dataSource.addAll(mExamples);
+                mExampleAdapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setRefreshing(false);
+            });
+        }).start();
+    };
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dataSource.addAll(
-                ImmutableList.of(
-                        new Example("Layout 布局", "Layout"),
-                        new Example("TextView", "Text"),
-                        new Example("Button", "Button"),
-                        new Example("EditText", "EditText"),
-                        new Example("ImageView", "ImageView"),
-                        new Example("ProgressView", "ProgressView"),
-                        new Example("AlertDialog", "AlertDialog"),
-                        new Example("ProgressDialog", "ProgressDialog"),
-                        new Example("ListView", "ListView"),
-                        new Example("RecyclerView", "RecyclerView"))
-        );
+        dataSource.addAll(mExamples);
     }
 
     @Nullable
@@ -56,8 +74,14 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(new ExampleAdapter(dataSource));
+        mExampleAdapter = new ExampleAdapter(dataSource);
+        recyclerView.setAdapter(mExampleAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+
         return view;
     }
 
