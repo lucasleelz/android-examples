@@ -2,7 +2,9 @@ package com.lucaslz.uicomponentexamples;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,9 +15,9 @@ import com.lucaslz.component.activity.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 
-    private Toolbar mToolbar;
+    private DrawerLayout mDrawerLayout;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = (MenuItem item) -> {
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnBottomNavigationItemSelectedListener = (MenuItem item) -> {
         FragmentManager fragmentManager = getSupportFragmentManager();
         ActionBar actionBar = getSupportActionBar();
         switch (item.getItemId()) {
@@ -41,27 +43,61 @@ public class MainActivity extends BaseActivity {
         return false;
     };
 
+    private NavigationView.OnNavigationItemSelectedListener mOnNavigationViewItemSelectedListener = (MenuItem item) -> {
+        int selectedItemId = item.getItemId();
+        item.setCheckable(true);
+        item.setChecked(true);
+        if (selectedItemId == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (selectedItemId == R.id.nav_gallery) {
+
+        } else if (selectedItemId == R.id.nav_slideshow) {
+
+        } else if (selectedItemId == R.id.nav_manage) {
+
+        } else if (selectedItemId == R.id.nav_share) {
+
+        } else if (selectedItemId == R.id.nav_send) {
+        }
+
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mToolbar = findViewById(R.id.toolbar);
-        mToolbar.setTitle("Home");
-        setSupportActionBar(mToolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Home");
+        setSupportActionBar(toolbar);
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.setOnNavigationItemSelectedListener(mOnBottomNavigationItemSelectedListener);
+
+        NavigationView navigationView = findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(mOnNavigationViewItemSelectedListener);
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.navigation_fragment_container, HomeFragment.newInstance())
                 .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
