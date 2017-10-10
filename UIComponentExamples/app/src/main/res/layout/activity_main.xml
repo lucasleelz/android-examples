@@ -34,6 +34,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            app:layout_constraintBottom_toBottomOf="@+id/navigation_fragment_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_add" />
+
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="0dp"
@@ -43,7 +52,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/navigation" />
-
     </android.support.constraint.ConstraintLayout>
 
     <!-- layout_gravity 必须指定，不然就默认只显示NavigationView了。-->
@@ -55,5 +63,3 @@
         app:headerLayout="@layout/navigation_header_main"
         app:menu="@menu/activity_main_drawer" />
 </android.support.v4.widget.DrawerLayout>
-
-
