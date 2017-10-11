@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class HomeFragment extends Fragment {
 
+    public static final String TAG = HomeFragment.class.getSimpleName();
+
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
         HomeFragment fragment = new HomeFragment();
@@ -33,15 +35,15 @@ public class HomeFragment extends Fragment {
     private List<Example> dataSource = new ArrayList<>();
 
     private List<Example> mExamples = ImmutableList.of(
-            new Example("Layout 布局", "Layout"),
-            new Example("CollapsingToolbarLayout", "CollapsingToolbarLayout"),
-            new Example("TextView", "Text"),
-            new Example("Button", "Button"),
-            new Example("EditText", "EditText"),
-            new Example("ImageView", "ImageView"),
-            new Example("ProgressView", "ProgressView"),
-            new Example("AlertDialog", "AlertDialog"),
-            new Example("ProgressDialog", "ProgressDialog"),
+//            new Example("Layout 布局", "Layout"),
+//            new Example("CollapsingToolbarLayout", "CollapsingToolbarLayout"),
+//            new Example("TextView", "Text"),
+//            new Example("Button", "Button"),
+//            new Example("EditText", "EditText"),
+//            new Example("ImageView", "ImageView"),
+//            new Example("ProgressView", "ProgressView"),
+//            new Example("AlertDialog", "AlertDialog"),
+//            new Example("ProgressDialog", "ProgressDialog"),
             new Example("ListView", "ListView"));
 
     private ExampleAdapter mExampleAdapter;
@@ -66,7 +68,10 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setRetainInstance(true);
+
         dataSource.addAll(mExamples);
+
     }
 
     @Nullable

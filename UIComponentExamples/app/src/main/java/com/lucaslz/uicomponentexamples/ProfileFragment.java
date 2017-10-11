@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 public class ProfileFragment extends Fragment {
 
+    public static final String TAG = ProfileFragment.class.getSimpleName();
+
     public ProfileFragment() {
         // Required empty public constructor
     }

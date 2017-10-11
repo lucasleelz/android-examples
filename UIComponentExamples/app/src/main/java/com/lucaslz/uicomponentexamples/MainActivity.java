@@ -1,12 +1,14 @@
 package com.lucaslz.uicomponentexamples;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -22,31 +24,35 @@ import com.lucaslz.component.activity.BaseActivity;
 public class MainActivity extends BaseActivity {
 
     private DrawerLayout mDrawerLayout;
+    private static final String sCurrentFragmentTag = "current_fragment_tag";
 
-    private Fragment mHomeFragment = HomeFragment.newInstance();
-    private Fragment mDashboardFragment = new Fragment();
-    private Fragment mProfileFragment = ProfileFragment.newInstance();
+    private Fragment mHomeFragment;
+    private Fragment mDashboardFragment;
+    private Fragment mProfileFragment;
+    private Fragment mCurrentFragment = null;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnBottomNavigationItemSelectedListener = (MenuItem item) -> {
-        FragmentManager fragmentManager = getSupportFragmentManager();
         ActionBar actionBar = getSupportActionBar();
         switch (item.getItemId()) {
             case R.id.navigation_home:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.navigation_fragment_container, mHomeFragment)
-                        .commit();
+                if (mHomeFragment == null) {
+                    mHomeFragment = HomeFragment.newInstance();
+                }
+                switchFragment(mHomeFragment);
                 actionBar.setTitle("Home");
                 return true;
             case R.id.navigation_dashboard:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.navigation_fragment_container, mDashboardFragment)
-                        .commit();
+                if (mDashboardFragment == null) {
+                    mDashboardFragment = DashboardFragment.newInstance();
+                }
+                switchFragment(mDashboardFragment);
                 actionBar.setTitle("Dashboard");
                 return true;
             case R.id.navigation_profile:
-                fragmentManager.beginTransaction()
-                        .replace(R.id.navigation_fragment_container, mProfileFragment)
-                        .commit();
+                if (mProfileFragment == null) {
+                    mProfileFragment = ProfileFragment.newInstance();
+                }
+                switchFragment(mProfileFragment);
                 actionBar.setTitle("Profile");
                 return true;
         }
@@ -106,11 +112,17 @@ public class MainActivity extends BaseActivity {
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(mFabOnClickListener);
-
+        if (savedInstanceState == null) {
+            switchFragment(HomeFragment.newInstance());
+            return;
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.navigation_fragment_container, mHomeFragment)
-                .commit();
+
+        mCurrentFragment = fragmentManager.findFragmentByTag(savedInstanceState.getString(sCurrentFragmentTag));
+        mHomeFragment = fragmentManager.findFragmentByTag(HomeFragment.TAG);
+        mDashboardFragment = fragmentManager.findFragmentByTag(DashboardFragment.TAG);
+        mProfileFragment = fragmentManager.findFragmentByTag(ProfileFragment.TAG);
+        switchFragment(mCurrentFragment);
     }
 
     @Override
@@ -120,5 +132,26 @@ public class MainActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(sCurrentFragmentTag, mCurrentFragment.getClass().getSimpleName());
+    }
+
+    private void switchFragment(Fragment nextFragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if (mCurrentFragment != null) {
+            fragmentTransaction.hide(mCurrentFragment);
+        }
+        if (!nextFragment.isAdded()) {
+            fragmentTransaction
+                    .add(R.id.navigation_fragment_container, nextFragment, nextFragment.getClass().getSimpleName())
+                    .commit();
+        } else {
+            fragmentTransaction.show(nextFragment).commit();
+        }
+        mCurrentFragment = nextFragment;
     }
 }
