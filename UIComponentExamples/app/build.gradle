@@ -11,6 +11,11 @@ android {
         versionName "0.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        javaCompileOptions {
+           annotationProcessorOptions {
+               arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+           }
+        }
     }
     buildTypes {
         release {
@@ -39,4 +44,6 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
     implementation "com.google.guava:guava:$rootProject.ext.guavaVersion"
     implementation "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
+    implementation "android.arch.persistence.room:runtime:$rootProject.ext.persistenceRoomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.ext.persistenceRoomVersion"
 }
