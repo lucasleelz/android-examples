@@ -11,8 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.lucaslz.uicomponentexamples.storage.AppDatabase;
-import com.lucaslz.uicomponentexamples.storage.DatabaseService;
+import com.lucaslz.uicomponentexamples.storage.Storage;
 import com.lucaslz.uicomponentexamples.storage.User;
 import com.lucaslz.uicomponentexamples.storage.UserDao;
 
@@ -21,7 +20,6 @@ import java.util.List;
 /**
  * Created by lucas on 2017/10/11.
  */
-
 public class DashboardFragment extends Fragment {
 
     public static final String TAG = DashboardFragment.class.getSimpleName();
@@ -36,7 +34,7 @@ public class DashboardFragment extends Fragment {
 
     private View.OnClickListener mSaveButtonClickListener = view -> {
 
-        UserDao userDao = DatabaseService.getInstance(getContext()).mAppDatabase.userDao();
+        UserDao userDao = Storage.getInstance(getContext()).getUserDao();
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPostExecute(Void aVoid) {
@@ -57,7 +55,7 @@ public class DashboardFragment extends Fragment {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                UserDao userDao = DatabaseService.getInstance(getContext()).mAppDatabase.userDao();
+                UserDao userDao = Storage.getInstance(getContext()).getUserDao();
                 List<User> users = userDao.findAll();
                 if (users.size() > 0) {
                     User user = users.get(0);
@@ -73,7 +71,7 @@ public class DashboardFragment extends Fragment {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                UserDao userDao = DatabaseService.getInstance(getContext()).mAppDatabase.userDao();
+                UserDao userDao = Storage.getInstance(getContext()).getUserDao();
                 List<User> users = userDao.findAll();
                 if (users.size() > 0) {
                     User user = users.get(0);
@@ -88,7 +86,7 @@ public class DashboardFragment extends Fragment {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                UserDao userDao = DatabaseService.getInstance(getContext()).mAppDatabase.userDao();
+                UserDao userDao = Storage.getInstance(getContext()).getUserDao();
                 List<User> users = userDao.findAll();
                 for (User user : users) {
                     Log.i(TAG, user.getUsername());
