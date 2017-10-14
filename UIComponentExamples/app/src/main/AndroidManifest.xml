@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".login.SignInActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +22,7 @@
             android:name=".UIComponentActivity"
             android:label="@string/layout_name"
             android:theme="@style/UIComponentActivityAppTheme" />
+
     </application>
 
 </manifest>

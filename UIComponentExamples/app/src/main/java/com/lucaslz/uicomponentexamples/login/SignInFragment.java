@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -19,18 +18,18 @@ import com.lucaslz.uicomponentexamples.R;
 /**
  * Created by lucas lee <llzqingdao2012gmail.com> on 2017/10/13.
  */
-public class LoginFragment extends Fragment implements LoginContract.View {
+public class SignInFragment extends Fragment implements SignInContract.View {
 
-    private LoginContract.Presenter mPresenter;
+    private SignInContract.Presenter mPresenter;
 
-    private AutoCompleteTextView mEmailTextView;
-    private EditText mPasswordView;
+    private EditText mEmailEditText;
+    private EditText mPasswordEditText;
     private View mProgressView;
     private View mLoginFormView;
 
-    public static LoginFragment newInstance() {
+    public static SignInFragment newInstance() {
         Bundle args = new Bundle();
-        LoginFragment fragment = new LoginFragment();
+        SignInFragment fragment = new SignInFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -39,11 +38,12 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-        mEmailTextView = rootView.findViewById(R.id.email);
-        mPasswordView = rootView.findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
+        mEmailEditText = rootView.findViewById(R.id.email);
+        mPasswordEditText = rootView.findViewById(R.id.password);
+        mPasswordEditText.setOnEditorActionListener((textView, id, keyEvent) -> {
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
                 attemptLogin();
+//                signUp();
                 return true;
             }
             return false;
@@ -58,16 +58,17 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     }
 
     void attemptLogin() {
-        mEmailTextView.setError(null);
-        mPasswordView.setError(null);
 
-        String email = mEmailTextView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        mEmailEditText.setError(null);
+        mPasswordEditText.setError(null);
+
+        String email = mEmailEditText.getText().toString();
+        String password = mPasswordEditText.getText().toString();
         boolean cancel = false;
         View focusView = null;
         if (TextUtils.isEmpty(email) && !isPasswordValid(password)) {
-            mEmailTextView.setError(getString(R.string.error_field_required));
-            focusView = mEmailTextView;
+            mEmailEditText.setError(getString(R.string.error_field_required));
+            focusView = mEmailEditText;
             cancel = true;
         }
 
@@ -84,6 +85,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     }
 
     void showProgress(final boolean show) {
+
         int shortAnimTime = getResources().getInteger(android.R.integer.config_longAnimTime);
 
         mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
@@ -106,7 +108,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     }
 
     @Override
-    public void setPresenter(LoginContract.Presenter presenter) {
+    public void setPresenter(SignInContract.Presenter presenter) {
         mPresenter = presenter;
     }
 

@@ -9,7 +9,7 @@ import com.lucaslz.component.activity.BaseActivity;
 /**
  * Created by lucas lee <llzqingdao2012gmail.com> on 2017/10/13.
  */
-public class LoginActivity extends BaseActivity {
+public class SignInActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -17,15 +17,19 @@ public class LoginActivity extends BaseActivity {
         setContentView(com.lucaslz.component.R.layout.activity_fragment);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        LoginFragment fragment = (LoginFragment) fragmentManager.findFragmentById(com.lucaslz.component.R.id.fragment_container);
+        SignInFragment fragment = (SignInFragment) fragmentManager.findFragmentById(com.lucaslz.component.R.id.fragment_container);
         if (fragment == null) {
-            fragment = LoginFragment.newInstance();
+            fragment = SignInFragment.newInstance();
             fragmentManager.beginTransaction()
                     .add(com.lucaslz.component.R.id.fragment_container, fragment)
                     .commit();
         }
 
-        new LoginPresenter(fragment);
+        new SignInPresenter(fragment);
     }
 
+    @Override
+    public void overridePendingTransition(int enterAnim, int exitAnim) {
+        super.overridePendingTransition(enterAnim, exitAnim);
+    }
 }

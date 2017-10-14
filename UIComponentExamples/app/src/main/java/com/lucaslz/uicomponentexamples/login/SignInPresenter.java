@@ -3,11 +3,11 @@ package com.lucaslz.uicomponentexamples.login;
 /**
  * Created by lucas lee <llzqingdao2012gmail.com> on 2017/10/13.
  */
-public class LoginPresenter implements LoginContract.Presenter {
+public class SignInPresenter implements SignInContract.Presenter {
 
-    private final LoginContract.View mLoginView;
+    private final SignInContract.View mLoginView;
 
-    public LoginPresenter(LoginContract.View loginView) {
+    public SignInPresenter(SignInContract.View loginView) {
         mLoginView = loginView;
         mLoginView.setPresenter(this);
     }

@@ -6,7 +6,7 @@ import com.lucaslz.uicomponentexamples.BaseView;
 /**
  * Created by lucas lee <llzqingdao2012gmail.com> on 2017/10/13.
  */
-public interface LoginContract {
+public interface SignInContract {
 
     interface View extends BaseView<Presenter> {
 
