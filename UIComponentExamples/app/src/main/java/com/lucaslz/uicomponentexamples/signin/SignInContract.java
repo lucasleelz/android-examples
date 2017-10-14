@@ -1,4 +1,4 @@
-package com.lucaslz.uicomponentexamples.login;
+package com.lucaslz.uicomponentexamples.signin;
 
 import com.lucaslz.uicomponentexamples.BasePresenter;
 import com.lucaslz.uicomponentexamples.BaseView;

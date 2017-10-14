@@ -1,4 +1,4 @@
-package com.lucaslz.uicomponentexamples.login;
+package com.lucaslz.uicomponentexamples.signin;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

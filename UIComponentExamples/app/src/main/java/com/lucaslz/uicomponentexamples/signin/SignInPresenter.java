@@ -1,4 +1,4 @@
-package com.lucaslz.uicomponentexamples.login;
+package com.lucaslz.uicomponentexamples.signin;
 
 /**
  * Created by lucas lee <llzqingdao2012gmail.com> on 2017/10/13.

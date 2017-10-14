@@ -1,4 +1,4 @@
-package com.lucaslz.uicomponentexamples.login;
+package com.lucaslz.uicomponentexamples.signin;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
