@@ -1,0 +1,139 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "2705bca1f269c8995df063a6c128e09d",
+    "entities": [
+      {
+        "tableName": "CITIES_",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ID_` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `CODE_` TEXT, `NAME_` TEXT, `PROVINCE_ID_` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "ID_",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "code",
+            "columnName": "CODE_",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "NAME_",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "provinceId",
+            "columnName": "PROVINCE_ID_",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "ID_"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_CITIES__CODE_",
+            "unique": true,
+            "columnNames": [
+              "CODE_"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_CITIES__CODE_` ON `${TABLE_NAME}` (`CODE_`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "COUNTIES_",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ID_` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `NAME_` TEXT, `WEATHER_ID_` TEXT, `CITY_ID_` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "ID_",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "NAME_",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "weatherId",
+            "columnName": "WEATHER_ID_",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cityId",
+            "columnName": "CITY_ID_",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "ID_"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "PROVINCES_",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ID_` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `CODE_` TEXT, `NAME_` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "ID_",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "code",
+            "columnName": "CODE_",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "NAME_",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "ID_"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_PROVINCES__CODE_",
+            "unique": true,
+            "columnNames": [
+              "CODE_"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_PROVINCES__CODE_` ON `${TABLE_NAME}` (`CODE_`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2705bca1f269c8995df063a6c128e09d\")"
+    ]
+  }
+}

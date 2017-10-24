@@ -1,4 +1,4 @@
-package com.lucaslz.weather.storage;
+package com.lucaslz.weather.data.local;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
@@ -24,7 +24,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CityDao mCityDao();
 
-    public abstract CountyDao mCountyDao();
+    public abstract CountiesDao mCountiesDao();
+
+    public abstract ProvincesDao mProvincesDao();
 
     private static AppDatabase INSTANCE;
     private static final Object sLock = new Object();
@@ -32,7 +34,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getInstance(Context context) {
         synchronized (sLock) {
             if (INSTANCE == null) {
-                Room.databaseBuilder(context, AppDatabase.class, "demo")
+                INSTANCE = Room.databaseBuilder(context, AppDatabase.class, "weather.db")
                         .build();
             }
         }

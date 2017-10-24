@@ -1,4 +1,4 @@
-package com.lucaslz.weather.storage;
+package com.lucaslz.weather.data.local;
 
 import android.arch.persistence.room.Dao;
 

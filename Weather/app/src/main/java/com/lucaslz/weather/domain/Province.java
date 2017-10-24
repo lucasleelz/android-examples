@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * 省。
  * Created by lucas lee <llzqingdao2012gmail.com> on 2017/10/23.
@@ -18,9 +20,11 @@ public class Province {
     @ColumnInfo(name = "ID_")
     private int id;
 
+    @SerializedName("id")
     @ColumnInfo(name = "CODE_")
     private String code;
 
+    @SerializedName("name")
     @ColumnInfo(name = "NAME_")
     private String name;
 

@@ -6,11 +6,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.lucaslz.weather.data.Injection;
+import com.lucaslz.weather.data.ProvincesDataSource;
+import com.lucaslz.weather.data.ProvincesRepository;
+import com.lucaslz.weather.domain.Province;
 import com.lucaslz.weather.utils.HttpUtil;
 
 import java.io.IOException;
@@ -25,6 +30,7 @@ import okhttp3.Response;
  * Created by lucas lee <llzqingdao2012gmail.com> on 2017/10/23.
  */
 public class ChooseAreaFragment extends Fragment {
+    public static final String TAG = ChooseAreaFragment.class.getSimpleName();
 
     public static final int LEVEL_PROVINCE = 0;
     public static final int LEVEL_CITY = 1;
@@ -33,6 +39,7 @@ public class ChooseAreaFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private AddressAdapter mAddressAdapter;
     private ProgressDialog mProgressDialog;
+    private ProvincesRepository mProvincesRepository;
 
     public static ChooseAreaFragment newInstance() {
         Bundle args = new Bundle();
@@ -44,7 +51,8 @@ public class ChooseAreaFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAddressAdapter = new AddressAdapter(new ArrayList<String>(0));
+        mAddressAdapter = new AddressAdapter(new ArrayList<>(0));
+        mProvincesRepository = Injection.provideProvincesRepository(getActivity().getApplicationContext());
     }
 
     @Nullable
@@ -61,6 +69,19 @@ public class ChooseAreaFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        new Thread(() -> {
+            mProvincesRepository.findProvinces(new ProvincesDataSource.LoadProvincesCallback() {
+                @Override
+                public void onProvincesLoaded(List<Province> provinces) {
+                    Log.i(TAG, provinces.toString());
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+                    Log.e(TAG, "加载失败...");
+                }
+            });
+        }).start();
     }
 
     private void showProgressDialog() {

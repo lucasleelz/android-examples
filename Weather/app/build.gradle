@@ -43,4 +43,5 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$rootProject.ext.persistenceRoomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.ext.persistenceRoomVersion"
     implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.squareup.okio:okio:1.13.0'
 }
