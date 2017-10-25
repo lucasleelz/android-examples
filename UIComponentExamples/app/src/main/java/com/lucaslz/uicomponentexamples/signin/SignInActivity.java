@@ -27,9 +27,4 @@ public class SignInActivity extends BaseActivity {
 
         new SignInPresenter(fragment);
     }
-
-    @Override
-    public void overridePendingTransition(int enterAnim, int exitAnim) {
-        super.overridePendingTransition(enterAnim, exitAnim);
-    }
 }
