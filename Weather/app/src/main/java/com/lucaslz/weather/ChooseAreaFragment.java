@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lucaslz.weather.data.Injection;
 import com.lucaslz.weather.data.ProvincesDataSource;
@@ -40,6 +41,8 @@ public class ChooseAreaFragment extends Fragment {
     private AddressAdapter mAddressAdapter;
     private ProgressDialog mProgressDialog;
     private ProvincesRepository mProvincesRepository;
+
+    private List<Province> mProvinces;
 
     public static ChooseAreaFragment newInstance() {
         Bundle args = new Bundle();
@@ -73,12 +76,17 @@ public class ChooseAreaFragment extends Fragment {
             mProvincesRepository.findProvinces(new ProvincesDataSource.LoadProvincesCallback() {
                 @Override
                 public void onProvincesLoaded(List<Province> provinces) {
-                    Log.i(TAG, provinces.toString());
+                    getActivity().runOnUiThread(() -> {
+                        mProvinces = provinces;
+
+                    });
                 }
 
                 @Override
                 public void onDataNotAvailable() {
-                    Log.e(TAG, "加载失败...");
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_LONG).show();
+                    });
                 }
             });
         }).start();

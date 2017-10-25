@@ -11,7 +11,12 @@ import com.lucaslz.weather.data.local.ProvincesDao;
 import com.lucaslz.weather.domain.Province;
 import com.lucaslz.weather.utils.HttpUtil;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -45,7 +50,7 @@ public class ProvincesRemoteDataSource implements ProvincesDataSource {
 
     @Override
     public void findProvinces(@NonNull LoadProvincesCallback callback) {
-        HttpUtil.sendOKHttpRequest("https://m.baidu.com/", new Callback() {
+        HttpUtil.sendOKHttpRequest("http://guolin.tech/api/china", new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 callback.onDataNotAvailable();
@@ -56,7 +61,8 @@ public class ProvincesRemoteDataSource implements ProvincesDataSource {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String responseJSON = response.body().toString();
+                String responseJSON = response.body().string();
+                Log.i(TAG, responseJSON);
                 List<Province> provinces = new Gson().fromJson(responseJSON, new TypeToken<List<Province>>() {
                 }.getType());
                 if (TextUtils.isEmpty(responseJSON) || provinces.isEmpty()) {
@@ -64,6 +70,7 @@ public class ProvincesRemoteDataSource implements ProvincesDataSource {
                     return;
                 }
                 callback.onProvincesLoaded(provinces);
+
             }
         });
     }

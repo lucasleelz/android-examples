@@ -11,37 +11,23 @@ import com.google.gson.annotations.SerializedName;
  * 省。
  * Created by lucas lee <llzqingdao2012gmail.com> on 2017/10/23.
  */
-@Entity(tableName = "PROVINCES_", indices = {
-        @Index(value = "CODE_", unique = true)
-})
+@Entity(tableName = "PROVINCES_")
 public class Province {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "ID_")
-    private int id;
-
-    @SerializedName("id")
-    @ColumnInfo(name = "CODE_")
-    private String code;
+    private Integer id;
 
     @SerializedName("name")
     @ColumnInfo(name = "NAME_")
     private String name;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {
